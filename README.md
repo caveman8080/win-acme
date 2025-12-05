@@ -1,3 +1,21 @@
+<a href="https://zerossl.com">
+<picture>
+  <!-- Dark mode -->
+  <source
+    media="(prefers-color-scheme: dark)"
+    srcset="https://github.com/win-acme/win-acme/blob/master/win-acme_banner_rounded_dark.png" />
+  <!-- Light mode -->
+  <source
+    media="(prefers-color-scheme: light)"
+    srcset="https://github.com/win-acme/win-acme/blob/master/win-acme_banner_rounded_light.png" />
+  <!-- Fallback for environments without media queries -->
+  <img
+    alt="ZeroSSL"
+    src="https://github.com/win-acme/win-acme/blob/master/win-acme_banner_rounded_light.png"
+    height="auto" />
+</picture>
+</a>
+
 # win-acme
 
 This is a ACMEv2 client for Windows that aims to be very simple to start with, but powerful enough to grow into almost every scenario.
