@@ -135,9 +135,9 @@ namespace PKISharp.WACS.Clients.Acme
                     return directory;
                 }
             }
-            catch
+            catch (Exception ex)
             {
-
+                _log.Warning("Error while getting service directory from 'directory' endpoint: {message}", ex.Message);
             }
             // Perhaps the BaseUri *is* the directory, such
             // as implemented by Digicert (#1434)
