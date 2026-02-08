@@ -14,3 +14,9 @@ updates:
       - "/src/plugin.*"
     schedule:
       interval: "monthly"
+# Enable version updates for Git Submodules
+  - package-ecosystem: "gitsubmodule"
+    directories:
+      - "/"
+    schedule:
+      interval: "monthly"
