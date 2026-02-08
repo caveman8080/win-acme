@@ -7,10 +7,6 @@ version: 2
 updates:
   # Enable version updates for NuGet
   - package-ecosystem: "nuget"
-    directories:
-      - "src/main/**"
-      - "src/main.lib/**"
-      - "src/main.test/**"
-      - "src/plugin.**/**"
+    directory: "/"
     schedule:
       interval: "monthly"
