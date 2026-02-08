@@ -120,7 +120,7 @@ namespace ACMESharp.Protocol
                     return (null, null, null);
                 }
             }
-            catch (Exception ex)
+            catch (HttpRequestException ex)
             {
                 throw new Exception($"Error retrieving terms of service from {tosUrl}", ex);
             }
