@@ -181,11 +181,28 @@ namespace PKISharp.WACS.Clients.Acme
                 _log.Debug("Refreshing cached order");
                 existingOrder = await RefreshOrder(existingOrder, client);
             }
-            catch (Exception ex)
+            catch (AcmeProtocolException ex)
             {
-                _log.Warning("Unable to refresh cached order: {ex}", ex.Message);
+                _log.Warning("ACME protocol error while refreshing cached order: {ex}", ex);
                 DeleteFromCache(cacheKey);
                 return null;
+            }
+            catch (IOException ex)
+            {
+                _log.Warning("I/O error while refreshing cached order: {ex}", ex);
+                DeleteFromCache(cacheKey);
+                return null;
+            }
+            catch (InvalidOperationException ex)
+            {
+                _log.Warning("Invalid operation while refreshing cached order: {ex}", ex);
+                DeleteFromCache(cacheKey);
+                return null;
+            }
+            catch (Exception ex)
+            {
+                _log.Error("Unexpected error while refreshing cached order, rethrowing: {ex}", ex);
+                throw;
             }
 
             if (existingOrder.Payload.Status != AcmeClient.OrderValid &&
