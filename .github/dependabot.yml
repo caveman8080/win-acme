@@ -5,17 +5,14 @@
 
 version: 2
 updates:
-  # Enable version updates for NuGet
-  - package-ecosystem: "nuget"
+  # Enable version updates for Git Submodules
+  - package-ecosystem: "gitsubmodule"
     directories:
-      - "/src/main"
-      - "/src/main.lib"
-      - "/src/main.test"
-      - "/src/plugin.*"
+      - "/"
     schedule:
       interval: "monthly"
-# Enable version updates for Git Submodules
-  - package-ecosystem: "gitsubmodule"
+  # Enable version updates for NuGet
+  - package-ecosystem: "nuget"
     directories:
       - "/"
     schedule:
