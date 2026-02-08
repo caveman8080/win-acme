@@ -20,6 +20,9 @@ namespace ACMESharp.HTTP
         public LinkCollection()
         { }
 
+        /// <summary>
+        /// Initializes a new <see cref="LinkCollection"/> from a sequence of <see cref="Link"/> instances.
+        /// </summary>
         /// <param name="links">It's OK to provide a null value.</param>
         public LinkCollection(IEnumerable<Link> links)
         {
@@ -32,6 +35,9 @@ namespace ACMESharp.HTTP
             }
         }
 
+        /// <summary>
+        /// Initializes a new <see cref="LinkCollection"/> from a sequence of link header string values.
+        /// </summary>
         /// <param name="linkValues">It's OK to provide a null value.</param>
         public LinkCollection(IEnumerable<string>? linkValues)
         {
