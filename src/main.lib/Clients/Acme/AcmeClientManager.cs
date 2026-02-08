@@ -401,11 +401,11 @@ namespace PKISharp.WACS.Clients.Acme
                 {
                     _log.Error(ex, "Unable to start application");
                 }
-                catch (InvalidOperationException ex)
+                catch (ObjectDisposedException ex)
                 {
                     _log.Error(ex, "Unable to start application");
                 }
-                catch (ObjectDisposedException ex)
+                catch (InvalidOperationException ex)
                 {
                     _log.Error(ex, "Unable to start application");
                 }
