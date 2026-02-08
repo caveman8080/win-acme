@@ -310,7 +310,11 @@ namespace PKISharp.WACS.Clients.Acme
                     throw;
                 }
             }
-            catch (Exception ex)
+            catch (Exception ex) when (
+                ex is HttpRequestException ||
+                ex is IOException ||
+                ex is JsonException ||
+                ex is SmtpException)
             {
                 _log.Error(ex, ex.Message);
                 return null;
