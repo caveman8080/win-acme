@@ -56,6 +56,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
+  	<PackageReference Include="MimeKit" Version="4.7.1" />
+  	<PackageReference Include="System.Net.Http" Version="4.3.4" />
 		<ProjectReference Include="..\ACMESharpCore\src\ACMESharp\ACMESharp.csproj" />
 		<ProjectReference Include="..\fluent-command-line-parser\FluentCommandLineParser\FluentCommandLineParser.csproj" />
 	</ItemGroup>
