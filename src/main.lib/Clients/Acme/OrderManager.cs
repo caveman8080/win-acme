@@ -8,7 +8,6 @@ using PKISharp.WACS.Services.Serialization;
 using System;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -158,21 +157,9 @@ namespace PKISharp.WACS.Clients.Acme
                             _log.Debug("Deactivating pre-existing authorization");
                             await client.DeactivateAuthorization(auth);
                         }
-                        catch (AcmeProtocolException ex)
+                        catch (Exception ex)
                         {
-                            _log.Warning("Error deactivating pre-existing authorization: {ex}", ex.Message);
-                        }
-                        catch (HttpRequestException ex)
-                        {
-                            _log.Warning("Error deactivating pre-existing authorization: {ex}", ex.Message);
-                        }
-                        catch (IOException ex)
-                        {
-                            _log.Warning("Error deactivating pre-existing authorization: {ex}", ex.Message);
-                        }
-                        catch (TaskCanceledException ex)
-                        {
-                            _log.Warning("Error deactivating pre-existing authorization: {ex}", ex.Message);
+                            _log.Warning("Error deactivating pre-existing authorization: {ex}", ex.Message); ;
                         }
                     }
                 }
@@ -186,28 +173,10 @@ namespace PKISharp.WACS.Clients.Acme
                 _log.Debug("Refreshing cached order");
                 existingOrder = await RefreshOrder(existingOrder, client);
             }
-            catch (AcmeProtocolException ex)
+            catch (Exception ex)
             {
                 _log.Warning("Unable to refresh cached order: {ex}", ex.Message);
                 DeleteFromCache(cacheKey);
-            catch (HttpRequestException ex)
-            {
-                _log.Warning("Unable to refresh cached order: {ex}", ex.Message);
-                DeleteFromCache(cacheKey);
-                return null;
-            }
-            catch (IOException ex)
-            {
-                _log.Warning("Unable to refresh cached order: {ex}", ex.Message);
-                DeleteFromCache(cacheKey);
-                return null;
-            }
-            catch (TaskCanceledException ex)
-            {
-                _log.Warning("Unable to refresh cached order: {ex}", ex.Message);
-                DeleteFromCache(cacheKey);
-                return null;
-            }
                 return null;
             }
 
