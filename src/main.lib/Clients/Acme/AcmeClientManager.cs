@@ -10,6 +10,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Mail;
+using System.Net.Http;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -186,7 +187,11 @@ namespace PKISharp.WACS.Clients.Acme
                     }
                 }
             }
-            catch (Exception ex)
+            catch (HttpRequestException ex)
+            {
+                _log.Error(ex, "Error getting terms of service");
+            }
+            catch (IOException ex)
             {
                 _log.Error(ex, "Error getting terms of service");
             }
