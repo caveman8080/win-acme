@@ -14,6 +14,7 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace PKISharp.WACS.Clients.Acme
 {
@@ -392,7 +393,19 @@ namespace PKISharp.WACS.Clients.Acme
                         UseShellExecute = true
                     });
                 }
-                catch (Exception ex)
+                catch (Win32Exception ex)
+                {
+                    _log.Error(ex, "Unable to start application");
+                }
+                catch (FileNotFoundException ex)
+                {
+                    _log.Error(ex, "Unable to start application");
+                }
+                catch (InvalidOperationException ex)
+                {
+                    _log.Error(ex, "Unable to start application");
+                }
+                catch (ObjectDisposedException ex)
                 {
                     _log.Error(ex, "Unable to start application");
                 }
