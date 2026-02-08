@@ -9,7 +9,7 @@ updates:
   - package-ecosystem: "gitsubmodule"
     directories:
       - "src/ACMESharpCore/**"
-      - "src/fluent-command-line-parser/**/
+      - "src/fluent-command-line-parser/**"
     schedule:
       interval: "monthly"
   # Enable version updates for NuGet
