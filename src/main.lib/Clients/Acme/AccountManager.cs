@@ -135,7 +135,19 @@ namespace PKISharp.WACS.Clients.Acme
                         return JsonSerializer.Deserialize(signerString.Value, AcmeClientJson.Insensitive.AccountSigner);
                     }
                 }
-                catch (Exception ex)
+                catch (IOException ex)
+                {
+                    _log.Error(ex, "Unable to load signer");
+                }
+                catch (UnauthorizedAccessException ex)
+                {
+                    _log.Error(ex, "Unable to load signer");
+                }
+                catch (JsonException ex)
+                {
+                    _log.Error(ex, "Unable to load signer");
+                }
+                catch (CryptographicException ex)
                 {
                     _log.Error(ex, "Unable to load signer");
                 }
