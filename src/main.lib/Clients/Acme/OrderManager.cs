@@ -157,9 +157,17 @@ namespace PKISharp.WACS.Clients.Acme
                             _log.Debug("Deactivating pre-existing authorization");
                             await client.DeactivateAuthorization(auth);
                         }
-                        catch (Exception ex)
+                        catch (AcmeProtocolException ex)
                         {
-                            _log.Warning("Error deactivating pre-existing authorization: {ex}", ex.Message); ;
+                            _log.Warning("ACME protocol error deactivating pre-existing authorization: {ex}", ex);
+                        }
+                        catch (IOException ex)
+                        {
+                            _log.Warning("I/O error deactivating pre-existing authorization: {ex}", ex);
+                        }
+                        catch (InvalidOperationException ex)
+                        {
+                            _log.Warning("Invalid operation deactivating pre-existing authorization: {ex}", ex);
                         }
                     }
                 }
