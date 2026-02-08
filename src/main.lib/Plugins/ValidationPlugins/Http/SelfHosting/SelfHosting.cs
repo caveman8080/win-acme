@@ -53,21 +53,43 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Http
             _files = new ConcurrentDictionary<string, string>();
         }
 
+        /// <summary>
+        /// Sanitize a string before logging to prevent log forging by
+        /// removing newline characters and other control characters that
+        /// could break log formatting.
+        /// </summary>
+        /// <param name="value">The string to sanitize.</param>
+        /// <returns>A sanitized version of the string safe for logging.</returns>
+        private static string SanitizeForLog(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                return string.Empty;
+            }
+
+            // Remove carriage returns and line feeds to avoid injecting new log lines.
+            var sanitized = value.Replace("\r", string.Empty)
+                                 .Replace("\n", string.Empty);
+
+            return sanitized;
+        }
+
         private async Task ReceiveRequests()
         {
             while (HasListener && Listener.IsListening)
             {
                 var ctx = await Listener.GetContextAsync();
                 var path = ctx.Request.Url?.LocalPath ?? "";
+                var safePath = SanitizeForLog(path);
                 if (_files.TryGetValue(path, out var response))
                 {
-                    _log.Verbose("SelfHosting plugin serving file {name}", path);
+                    _log.Verbose("SelfHosting plugin serving file {name}", safePath);
                     using var writer = new StreamWriter(ctx.Response.OutputStream);
                     writer.Write(response);
                 }
                 else
                 {
-                    _log.Warning("SelfHosting plugin couldn't serve file {name}", path);
+                    _log.Warning("SelfHosting plugin couldn't serve file {name}", safePath);
                     ctx.Response.StatusCode = 404;
                 }
             }
