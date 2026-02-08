@@ -241,9 +241,17 @@ namespace PKISharp.WACS.Clients.Acme
                 }
                 _log.Information("Signer re-saved");
             }
-            catch
+            catch (CryptographicException ex)
             {
-                _log.Error("Cannot re-save account (created on a different machine?)");
+                _log.Error(ex, "Cannot re-save account due to cryptographic error (created on a different machine?)");
+            }
+            catch (IOException ex)
+            {
+                _log.Error(ex, "Cannot re-save account due to I/O error");
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                _log.Error(ex, "Cannot re-save account due to access permissions");
             }
         }
     }
