@@ -214,43 +214,55 @@ namespace PKISharp.WACS.Services
             // Copied from http://stackoverflow.com/a/16638000
             var bufferSize = 16384;
             var inputStream = Console.OpenStandardInput(bufferSize);
-            Console.SetIn(new StreamReader(inputStream, Console.InputEncoding, false, bufferSize));
-
-            int top = default;
-            int left = default;
-            if (!Console.IsOutputRedirected)
+            var originalIn = Console.In;
+            using (var reader = new StreamReader(inputStream, Console.InputEncoding, false, bufferSize))
             {
-                top = Console.CursorTop;
-                left = Console.CursorLeft;
-            }
-
-            var ret = new StringBuilder();
-            do
-            {
-                var line = Console.ReadLine();
-                if (string.IsNullOrWhiteSpace(line))
+                try
                 {
-                    break;
-                }
-                ret.AppendLine(line);
-            }
-            while (multiline);
+                    Console.SetIn(reader);
 
-            var answer = ret.ToString();
-            if (string.IsNullOrWhiteSpace(answer))
-            {
-                if (!Console.IsOutputRedirected)
-                {
-                    Console.SetCursorPosition(left, top);
+                    int top = default;
+                    int left = default;
+                    if (!Console.IsOutputRedirected)
+                    {
+                        top = Console.CursorTop;
+                        left = Console.CursorLeft;
+                    }
+
+                    var ret = new StringBuilder();
+                    do
+                    {
+                        var line = Console.ReadLine();
+                        if (string.IsNullOrWhiteSpace(line))
+                        {
+                            break;
+                        }
+                        ret.AppendLine(line);
+                    }
+                    while (multiline);
+
+                    var answer = ret.ToString();
+                    if (string.IsNullOrWhiteSpace(answer))
+                    {
+                        if (!Console.IsOutputRedirected)
+                        {
+                            Console.SetCursorPosition(left, top);
+                        }
+                        WriteLine("<Enter>");
+                        WriteLine();
+                        return Task.FromResult(string.Empty);
+                    }
+                    else
+                    {
+                        WriteLine();
+                        return Task.FromResult(answer.Trim());
+                    }
                 }
-                WriteLine("<Enter>");
-                WriteLine();
-                return Task.FromResult(string.Empty);
-            }
-            else
-            {
-                WriteLine();
-                return Task.FromResult(answer.Trim());
+                finally
+                {
+                    // Restore the original console input stream
+                    Console.SetIn(originalIn);
+                }
             }
         }
 
