@@ -101,7 +101,7 @@ namespace PKISharp.WACS.Clients
         private void EnsureDirectories(Uri uri)
         {
             // Setup connection
-            var client = CreateRequest(uri);
+            using var client = CreateRequest(uri);
             client.Connect();
 
             // Get Directories
@@ -136,7 +136,6 @@ namespace PKISharp.WACS.Clients
 
             // Close connection
             client.Disconnect();
-            client.Dispose();
         }
 
         /// <summary>
