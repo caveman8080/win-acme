@@ -28,7 +28,7 @@ namespace PKISharp.WACS.Plugins.CsrPlugins
         /// <returns></returns>
         internal override AsymmetricCipherKeyPair GenerateNewKeyPair()
         {
-            var randomGenerator = new CryptoApiRandomGenerator();
+            using var randomGenerator = new CryptoApiRandomGenerator();
             var random = new SecureRandom(randomGenerator);
             var keyBits = _settings.Csr?.Rsa?.KeyBits ??
 #pragma warning disable CS0618
