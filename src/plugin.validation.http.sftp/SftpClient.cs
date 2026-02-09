@@ -147,25 +147,26 @@ namespace PKISharp.WACS.Clients
         {
             // Setup connection
             var uri = CreateUri(sftpPathWithHost);
-            var client = CreateRequest(uri);
-            client.Connect();
+            using (var client = CreateRequest(uri))
+            {
+                client.Connect();
 
-            // Get file list
-            client.ChangeDirectory(uri.AbsolutePath);
-            var fileList = client.ListDirectory(client.WorkingDirectory).Where(it => it.IsRegularFile).Select(it => it.FullName);
+                // Get file list
+                client.ChangeDirectory(uri.AbsolutePath);
+                var fileList = client.ListDirectory(client.WorkingDirectory).Where(it => it.IsRegularFile).Select(it => it.FullName);
 
-            // Close connection
-            client.Disconnect();
-            client.Dispose();
+                // Close connection
+                client.Disconnect();
 
-            // Create appropriate return value
-            var returnValue = string.Join(", ", fileList).Trim();
+                // Create appropriate return value
+                var returnValue = string.Join(", ", fileList).Trim();
 
-            // Log for debugging
-            _log.Verbose("Files in path {sftpPath}: {@returnValue}", sftpPathWithHost, returnValue);
+                // Log for debugging
+                _log.Verbose("Files in path {sftpPath}: {@returnValue}", sftpPathWithHost, returnValue);
 
-            // Return necessary values
-            return returnValue;
+                // Return necessary values
+                return returnValue;
+            }
         }
 
         /// <summary>
@@ -177,35 +178,36 @@ namespace PKISharp.WACS.Clients
         {
             // Setup connection
             var uri = CreateUri(sftpPathWithHost);
-            var client = CreateRequest(uri);
-            client.Connect();
-
-            // Check for file or directory and delete
-            client.ChangeDirectory("/");
-
-            if (client.Exists(uri.AbsolutePath))
+            using (var client = CreateRequest(uri))
             {
-                if (fileType == FileType.Directory)
+                client.Connect();
+
+                // Check for file or directory and delete
+                client.ChangeDirectory("/");
+
+                if (client.Exists(uri.AbsolutePath))
                 {
-                    client.DeleteDirectory(uri.AbsolutePath);
-                }
-                else if (fileType == FileType.File)
-                {
-                    client.DeleteFile(uri.AbsolutePath);
-                }
-                else
-                {
-                    throw new NotImplementedException();
+                    if (fileType == FileType.Directory)
+                    {
+                        client.DeleteDirectory(uri.AbsolutePath);
+                    }
+                    else if (fileType == FileType.File)
+                    {
+                        client.DeleteFile(uri.AbsolutePath);
+                    }
+                    else
+                    {
+                        throw new NotImplementedException();
+                    }
+
+                    // Log for debugging
+                    var statusDescription = client.Exists(uri.AbsolutePath) ? "Not deleted" : "Deleted";
+                    _log.Verbose("Delete {sftpPath} status {StatusDescription}", sftpPathWithHost, statusDescription);
                 }
 
-                // Log for debugging
-                var statusDescription = client.Exists(uri.AbsolutePath) ? "Not deleted" : "Deleted";
-                _log.Verbose("Delete {sftpPath} status {StatusDescription}", sftpPathWithHost, statusDescription);
+                // Close connection
+                client.Disconnect();
             }
-
-            // Close connection
-            client.Disconnect();
-            client.Dispose();
         }
 
         public enum FileType
