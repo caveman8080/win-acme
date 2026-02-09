@@ -107,7 +107,7 @@ namespace PKISharp.WACS.Services
             var endSource = "rd";
 
             // Guard rail #1: certificate should at least be valid for RenewalMinimumValidDays
-            var endMinValid = validUntil.AddDays(-1 * (_settings.ScheduledTask.RenewalMinimumValidDays ?? DueDateStaticService.DefaultMinValidDays));
+            var endMinValid = validUntil.AddDays(-1.0 * (_settings.ScheduledTask.RenewalMinimumValidDays ?? DueDateStaticService.DefaultMinValidDays));
             if (endMinValid < end)
             {
                 end = endMinValid;
