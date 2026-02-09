@@ -51,7 +51,7 @@ namespace PKISharp.WACS.Services
         public static T? ParsePem<T>(string pem) where T: class
         {
             using var tr = new StringReader(pem);
-            var pr = new openssl.PemReader(tr);
+            using var pr = new openssl.PemReader(tr);
             return pr.ReadObject() as T;
         }
     }
