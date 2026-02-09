@@ -8,10 +8,12 @@ namespace PKISharp.WACS.Services
         public static string Generate()
         {
             // Set 256 bit random password that will be used to keep the .pfx file in the cache folder safe.
-            var random = RandomNumberGenerator.Create();
-            var buffer = new byte[32];
-            random.GetBytes(buffer);
-            return Convert.ToBase64String(buffer);
+            using (var random = RandomNumberGenerator.Create())
+            {
+                var buffer = new byte[32];
+                random.GetBytes(buffer);
+                return Convert.ToBase64String(buffer);
+            }
         }
     }
 }
