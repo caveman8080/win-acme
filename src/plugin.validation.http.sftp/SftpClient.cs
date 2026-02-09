@@ -80,7 +80,7 @@ namespace PKISharp.WACS.Clients
             stream.Position = 0;
 
             // Setup connection
-            var client = CreateRequest(uri);
+            using var client = CreateRequest(uri);
             client.Connect();
 
             // Copy data onto sftp
@@ -92,7 +92,6 @@ namespace PKISharp.WACS.Clients
 
             // Close connection
             client.Disconnect();
-            client.Dispose();
         }
 
         /// <summary>
