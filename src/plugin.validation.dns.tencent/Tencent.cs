@@ -132,7 +132,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Dns
             var param = new { Domain = domain, RecordId = recordId };
             var req = new CommonRequest(param);
             var act = "DeleteRecord";
-            var resp = client.Call(req, act);
+            client.Call(req, act);
             //Console.WriteLine(resp);
             return true;
         }
