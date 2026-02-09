@@ -96,16 +96,26 @@ namespace PKISharp.WACS.Plugins.StorePlugins
             {
                 var dest = PathForIdentifier(identifier);
                 var fi = new FileInfo(dest);
-                var cert = LoadCertificate(fi);
-                if (cert != null)
+                X509Certificate2? cert = null;
+                try
                 {
-                    if (string.Equals(cert.Thumbprint, input.Thumbprint, StringComparison.InvariantCultureIgnoreCase))
+                    cert = LoadCertificate(fi);
+                    if (cert != null)
                     {
-                        _log.Warning("Delete {fi} with thumb {thumb}", fi.FullName, cert.Thumbprint);
-                        fi.Delete();
+                        if (string.Equals(cert.Thumbprint, input.Thumbprint, StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            _log.Warning("Delete {fi} with thumb {thumb}", fi.FullName, cert.Thumbprint);
+                            fi.Delete();
+                        }
                     }
-                    cert.Dispose();
-                }               
+                }
+                finally
+                {
+                    if (cert != null)
+                    {
+                        cert.Dispose();
+                    }
+                }
             }
             return Task.CompletedTask;
         }
