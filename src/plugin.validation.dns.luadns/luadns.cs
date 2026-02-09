@@ -4,6 +4,7 @@ using PKISharp.WACS.Plugins.Interfaces;
 using PKISharp.WACS.Services;
 using System;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -56,8 +57,8 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Dns
         }
 
         private static readonly Uri _LuaDnsApiEndpoint = new("https://api.luadns.com/v1/", UriKind.Absolute);
-        private static readonly Dictionary<string, RecordData> _recordsMap = new();
-
+        private static readonly ConcurrentDictionary<string, RecordData> _recordsMap = new ConcurrentDictionary<string, RecordData>();
+        private static readonly object _recordsMapLock = new();
         private readonly IProxyService _proxyService;
 
         private readonly string? _userName;
@@ -119,30 +120,34 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Dns
                 _log.Error("Empty or invalid response");
                 return false;
             }
-            _recordsMap[record.Authority.Domain] = newRecord;
+            lock (_recordsMapLock)
+            {
+                _recordsMap[record.Authority.Domain] = newRecord;
+            }
             return true;
         }
 
         public override async Task DeleteRecord(DnsValidationRecord record)
         {
-            if (!_recordsMap.ContainsKey(record.Authority.Domain))
+            RecordData? created;
+            if (!_recordsMap.TryGetValue(record.Authority.Domain, out created))
             {
                 _log.Warning($"No record with name {record.Authority.Domain} was created");
                 return;
             }
+            _ = _recordsMap.TryRemove(record.Authority.Domain, out _);
 
             _log.Information("Deleting LuaDNS verification record");
 
             using var client = GetClient();
-            var created = _recordsMap[record.Authority.Domain];
             var response = await client.DeleteAsync(new Uri(_LuaDnsApiEndpoint, $"zones/{created.ZoneId}/records/{created.Id}"));
             if (!response.IsSuccessStatusCode)
             {
                 _log.Warning("Failed to delete DNS verification record");
                 return;
             }
-
-            _ = _recordsMap.Remove(record.Authority.Domain);
+            
+            _recordsMap.TryRemove(record.Authority.Domain, out _);
         }
 
         private HttpClient GetClient()
