@@ -607,35 +607,37 @@ namespace ACMESharp.Protocol
             expectedStatuses ??= new[] { HttpStatusCode.OK };
 
             var uri = new Uri(_http.BaseAddress!, relativeUri);
-            var requ = new HttpRequestMessage(method, uri);
-            var skipNonce = method == HttpMethod.Get;
+            using (var requ = new HttpRequestMessage(method, uri))
+            {
+                var skipNonce = method == HttpMethod.Get;
 
-            if (string.IsNullOrEmpty(message) && method == HttpMethod.Post)
-            {
-                message = ComputeAcmeSigned("", uri.ToString());
-            } 
-            if (message != null)
-            {
-                requ.Content = new StringContent(message);
-                requ.Content.Headers.ContentType = Constants.JsonContentTypeHeaderValue;
-            }
+                if (string.IsNullOrEmpty(message) && method == HttpMethod.Post)
+                {
+                    message = ComputeAcmeSigned("", uri.ToString());
+                }
+                if (message != null)
+                {
+                    requ.Content = new StringContent(message);
+                    requ.Content.Headers.ContentType = Constants.JsonContentTypeHeaderValue;
+                }
 
-            var resp = await _http.SendAsync(requ);
-            if (expectedStatuses.Length > 0 && !expectedStatuses.Contains(resp.StatusCode))
-            {
-                // Since we're about to throw anyway, we process a nonce if it's
-                // there but if not we don't want to overshadow the more immediate
-                // error that we're about to signal with an exception
+                var resp = await _http.SendAsync(requ);
+                if (expectedStatuses.Length > 0 && !expectedStatuses.Contains(resp.StatusCode))
+                {
+                    // Since we're about to throw anyway, we process a nonce if it's
+                    // there but if not we don't want to overshadow the more immediate
+                    // error that we're about to signal with an exception
+                    if (!skipNonce)
+                        _ = ExtractNextNonce(resp, true);
+
+                    throw await DecodeResponseErrorAsync(resp, opName: opName);
+                }
+
                 if (!skipNonce)
-                    _ = ExtractNextNonce(resp, true);
+                    _ = ExtractNextNonce(resp);
 
-                throw await DecodeResponseErrorAsync(resp, opName: opName);
+                return resp;
             }
-
-            if (!skipNonce)
-                _ = ExtractNextNonce(resp);
-
-            return resp;
         }
 
         /// <summary>
