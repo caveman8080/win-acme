@@ -308,7 +308,7 @@ namespace PKISharp.WACS
                 return null;
             }
             if (cachedCertificate.CacheFile.LastWriteTime <
-                DateTime.Now.AddDays(_settings.Cache.ReuseDays * -1))
+                DateTime.Now.AddDays(- (double)_settings.Cache.ReuseDays))
             {
                 return null;
             }
