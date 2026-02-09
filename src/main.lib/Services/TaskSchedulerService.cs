@@ -209,12 +209,13 @@ namespace PKISharp.WACS.Services
                 _settings.ScheduledTask.StartBoundary.Minutes,
                 _settings.ScheduledTask.StartBoundary.Seconds);
 
-            task.Triggers.Add(new DailyTrigger
+            using (var dailyTrigger = new DailyTrigger())
             {
-                DaysInterval = 1,
-                StartBoundary = runtime,
-                RandomDelay = _settings.ScheduledTask.RandomDelay
-            });
+                dailyTrigger.DaysInterval = 1;
+                dailyTrigger.StartBoundary = runtime;
+                dailyTrigger.RandomDelay = _settings.ScheduledTask.RandomDelay;
+                task.Triggers.Add(dailyTrigger);
+            }
             task.Settings.ExecutionTimeLimit = _settings.ScheduledTask.ExecutionTimeLimit;
             task.Settings.MultipleInstances = TaskInstancesPolicy.IgnoreNew;
             task.Settings.RunOnlyIfNetworkAvailable = true;
