@@ -23,12 +23,12 @@ namespace TransIp.Library
         }
 
         public async Task CreateDnsEntry(string domainName, DnsEntry entry) => 
-            _ = await Post($"domains/{domainName}/dns", new DnsEntryWrapper() { DnsEntry = entry });
+            await Post($"domains/{domainName}/dns", new DnsEntryWrapper() { DnsEntry = entry });
 
         public async Task UpdateDnsEntry(string domainName, DnsEntry entry) => 
-            _ = await Patch($"domains/{domainName}/dns", new DnsEntryWrapper() { DnsEntry = entry });
+            await Patch($"domains/{domainName}/dns", new DnsEntryWrapper() { DnsEntry = entry });
 
         public async Task DeleteDnsEntry(string domainName, DnsEntry entry) => 
-            _ = await Delete($"domains/{domainName}/dns", new DnsEntryWrapper() { DnsEntry = entry });
+            await Delete($"domains/{domainName}/dns", new DnsEntryWrapper() { DnsEntry = entry });
     }
 }

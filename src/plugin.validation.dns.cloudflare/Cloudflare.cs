@@ -92,7 +92,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Dns
             }
 
             var dns = ctx.Zone(zone).Dns;
-            _ = await dns.Create(DnsRecordType.TXT, record.Authority.Domain, record.Value)
+            await dns.Create(DnsRecordType.TXT, record.Authority.Domain, record.Value)
                 .Ttl(60)
                 .CallAsync(_hc)
                 .ConfigureAwait(false);
@@ -119,7 +119,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Dns
 
             try
             {
-                _ = await dns.Delete(record.Id)
+                await dns.Delete(record.Id)
                     .CallAsync(_hc)
                     .ConfigureAwait(false);
             } 

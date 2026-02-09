@@ -89,7 +89,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Dns
 
             try
             {
-                _ = await _client.CreateTxtRecord(_options.ProjectId ?? "", zone, recordName, token);
+                await _client.CreateTxtRecord(_options.ProjectId ?? "", zone, recordName, token);
                 return true;
             }
             catch(Exception ex)
@@ -112,7 +112,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Dns
 
             try
             {
-                _ = await _client.DeleteTxtRecord(_options.ProjectId ?? "", zone, recordName);
+                await _client.DeleteTxtRecord(_options.ProjectId ?? "", zone, recordName);
                 _log.Debug("Deleted TXT record");
             }
             catch (Exception ex)

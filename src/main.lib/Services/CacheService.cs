@@ -281,15 +281,18 @@ namespace PKISharp.WACS.Services
             // the target.
             var cacheKeyBuilder = new StringBuilder();
             cacheKeyBuilder.Append(order.CacheKeyPart);
-            _ = version > 1 ?
-                cacheKeyBuilder.Append(order.Target.CommonName?.Value) :
+            if (version > 1)
+                cacheKeyBuilder.Append(order.Target.CommonName?.Value);
+            else
                 cacheKeyBuilder.Append(order.Target.CommonName);
             cacheKeyBuilder.Append(string.Join(',', order.Target.GetIdentifiers(true).OrderBy(x => x).Select(x => x.Value.ToLower())));
-            _ = order.Target.UserCsrBytes != null ?
-                cacheKeyBuilder.Append(Convert.ToBase64String(order.Target.UserCsrBytes.ToArray())) :
+            if (order.Target.UserCsrBytes != null)
+                cacheKeyBuilder.Append(Convert.ToBase64String(order.Target.UserCsrBytes.ToArray()));
+            else
                 cacheKeyBuilder.Append('-');
-            _ = order.Renewal.CsrPluginOptions != null ?
-                cacheKeyBuilder.Append(JsonSerializer.Serialize(order.Renewal.CsrPluginOptions, WacsJson.Default.CsrPluginOptions)) :
+            if (order.Renewal.CsrPluginOptions != null)
+                cacheKeyBuilder.Append(JsonSerializer.Serialize(order.Renewal.CsrPluginOptions, WacsJson.Default.CsrPluginOptions));
+            else
                 cacheKeyBuilder.Append('-');
             if (version > 3)
             {

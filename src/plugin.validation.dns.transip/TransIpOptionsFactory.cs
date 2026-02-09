@@ -79,7 +79,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Dns
             }
             try
             {
-                _ = new AuthenticationService("check", privateKey, _proxy);
+                new AuthenticationService("check", privateKey, _proxy);
                 return true;
             }
             catch (Exception ex) 

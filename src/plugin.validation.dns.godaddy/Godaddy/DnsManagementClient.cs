@@ -51,7 +51,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Godaddy
                 var response = await client.PutAsync(buildApiUrl, httpContent);
                 if (response.StatusCode == HttpStatusCode.OK || response.StatusCode == HttpStatusCode.NoContent)
                 {
-                    _ = await response.Content.ReadAsStringAsync();
+                    await response.Content.ReadAsStringAsync();
                 }
                 else
                 {

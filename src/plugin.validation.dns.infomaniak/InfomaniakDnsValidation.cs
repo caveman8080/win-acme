@@ -56,7 +56,7 @@ internal class InfomaniakDnsValidation : DnsValidation<InfomaniakDnsValidation>
             {
                 throw new InvalidDataException("Infomaniak did not return a valid domain id.");
             }
-            _ = _domainIds.TryAdd(record.Authority.Domain, domainId);
+            _domainIds.TryAdd(record.Authority.Domain, domainId);
 
             var recordName = RelativeRecordName(domain, record.Authority.Domain);
             var recordId = await _client.CreateRecord(domainId, recordName, record.Value);
@@ -64,7 +64,7 @@ internal class InfomaniakDnsValidation : DnsValidation<InfomaniakDnsValidation>
             {
                 throw new InvalidDataException("Infomaniak did not return a valid domain record id.");
             }
-            _ = _recordIds.AddOrUpdate(
+            _recordIds.AddOrUpdate(
                 domainId,
                 new List<int> { recordId },
                 (b, s) => s.Append(recordId).ToList());

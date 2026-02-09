@@ -48,7 +48,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins
                 {
                     throw new InvalidDataException("Linode did not return a valid domain id.");
                 }
-                _ = _domainIds.TryAdd(record.Authority.Domain, domainId);
+                _domainIds.TryAdd(record.Authority.Domain, domainId);
 
                 var recordName = RelativeRecordName(domain, record.Authority.Domain);
                 var recordId = await _client.CreateRecord(domainId, recordName, record.Value);
@@ -56,7 +56,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins
                 {
                     throw new InvalidDataException("Linode did not return a valid domain record id.");
                 }
-                _ = _recordIds.AddOrUpdate(
+                _recordIds.AddOrUpdate(
                     domainId,
                     new List<int> { recordId }, 
                     (b, s) => s.Append(recordId).ToList());
@@ -79,7 +79,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins
                     {
                         try
                         {
-                            _ = await _client.DeleteRecord(domainId, recordId);
+                            await _client.DeleteRecord(domainId, recordId);
                         }
                         catch (Exception ex)
                         {

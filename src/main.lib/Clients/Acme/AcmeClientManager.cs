@@ -447,7 +447,7 @@ namespace PKISharp.WACS.Clients.Acme
             {
                 try
                 {
-                    _ = new MailAddress(x);
+                    new MailAddress(x);
                     return true;
                 }
                 catch

@@ -76,7 +76,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Dns
                 var identifier = GetDomain(record) ?? throw new($"The domain name cannot be found: {record.Context.Identifier}");
                 var domain = record.Authority.Domain;
                 //Delete Record
-                _ = DelRecord(identifier, domain);
+                DelRecord(identifier, domain);
             }
             catch (Exception ex)
             {
@@ -99,7 +99,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Dns
         {
             subDomain = subDomain.Replace($".{domain}", "");
             //Delete Record
-            _ = DelRecord(domain, subDomain);
+            DelRecord(domain, subDomain);
             //Add Record
             var addRecords = new AddDomainRecordRequest
             {

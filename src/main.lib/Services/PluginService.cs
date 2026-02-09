@@ -198,7 +198,7 @@ namespace PKISharp.WACS.Services
         /// <param name="type"></param>
         private void ListPlugins(IEnumerable<Type> list, string type)
         {
-            _ = list.Where(x => x.Assembly != typeof(PluginService).Assembly).
+            list.Where(x => x.Assembly != typeof(PluginService).Assembly).
                 All(x =>
                 {
                     _log.Verbose("Loaded {type} plugin {name} from {location}", type, x.Name, x.Assembly.Location);

@@ -49,7 +49,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Dns
                 certificateInfo.PfxBytes());
             try
             {
-                _ = await client.ImportCertificateAsync(importOptions);
+                await client.ImportCertificateAsync(importOptions);
                 return new StoreInfo() {
                     Path = _options.VaultName,
                     Name = _options.CertificateName

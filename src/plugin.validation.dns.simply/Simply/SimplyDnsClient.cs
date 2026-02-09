@@ -72,20 +72,20 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Simply
             using var content = new StringContent(JsonSerializer.Serialize(record), Encoding.UTF8, "application/json");
             using var response = await _httpClient.PostAsync(_baseUrl + $"/my/products/{WebUtility.UrlEncode(objectId)}/dns/records", content);
             var responseBody = await response.Content.ReadAsStringAsync();
-            _ = response.EnsureSuccessStatusCode();
+            response.EnsureSuccessStatusCode();
         }
 
         private async Task DeleteRecordAsync(string objectId, int recordId)
         {
             using var response = await _httpClient.DeleteAsync(_baseUrl + $"/my/products/{WebUtility.UrlEncode(objectId)}/dns/records/{recordId}");
             var responseBody = await response.Content.ReadAsStringAsync();
-            _ = response.EnsureSuccessStatusCode();
+            response.EnsureSuccessStatusCode();
         }
 
         private async Task<List<DnsRecord>> GetRecordsAsync(string objectId)
         {
             using var response = await _httpClient.GetAsync(_baseUrl + $"/my/products/{WebUtility.UrlEncode(objectId)}/dns/records");
-            _ = response.EnsureSuccessStatusCode();
+            response.EnsureSuccessStatusCode();
             await using var stream = await response.Content.ReadAsStreamAsync();
             var records = await JsonSerializer.DeserializeAsync<DnsRecordList>(stream);
             if (records == null || records.Records == null)

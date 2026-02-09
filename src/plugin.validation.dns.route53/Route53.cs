@@ -142,7 +142,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Dns
                         zone,
                         new ChangeBatch(recordSets.Select(x => new Change(ChangeAction.DELETE, x)).ToList()))));
             }
-            _ = await Task.WhenAll(deleteTasks);
+            await Task.WhenAll(deleteTasks);
         }      
 
         /// <summary>

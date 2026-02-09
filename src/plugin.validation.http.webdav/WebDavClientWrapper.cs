@@ -105,7 +105,7 @@ namespace PKISharp.WACS.Client
             path = NormalizePath(path);
             try
             {
-                var x = _client.Delete(path).Result;
+                _client.Delete(path).Wait();
             }
             catch (Exception ex)
             {

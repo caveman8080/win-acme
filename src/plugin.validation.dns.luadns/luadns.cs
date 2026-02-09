@@ -135,7 +135,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Dns
                 _log.Warning($"No record with name {record.Authority.Domain} was created");
                 return;
             }
-            _ = _recordsMap.TryRemove(record.Authority.Domain, out _);
+            _recordsMap.TryRemove(record.Authority.Domain, out _);
 
             _log.Information("Deleting LuaDNS verification record");
 

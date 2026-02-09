@@ -383,7 +383,6 @@ namespace PKISharp.WACS.Clients.IIS
                 if (adminService.IsAdmin)
                 {
                     using var x = new ServerManager();
-                    _ = x.ApplicationDefaults;
                 }
             }
             catch (Exception ex)
@@ -399,8 +398,8 @@ namespace PKISharp.WACS.Clients.IIS
                 using var componentsKey = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\InetStp", false);
                 if (componentsKey != null)
                 {
-                    _ = int.TryParse(componentsKey.GetValue("MajorVersion", "-1")?.ToString() ?? "-1", out var majorVersion);
-                    _ = int.TryParse(componentsKey.GetValue("MinorVersion", "-1")?.ToString() ?? "-1", out var minorVersion);
+                    int.TryParse(componentsKey.GetValue("MajorVersion", "-1")?.ToString() ?? "-1", out var majorVersion);
+                    int.TryParse(componentsKey.GetValue("MinorVersion", "-1")?.ToString() ?? "-1", out var minorVersion);
                     if (majorVersion != -1 && minorVersion != -1)
                     {
                         return new Version(majorVersion, minorVersion);

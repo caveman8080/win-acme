@@ -139,7 +139,7 @@ namespace PKISharp.WACS.Plugins.SecretPlugins
             var item = _secrets.Where(x => x.Key == key).FirstOrDefault();
             if (item != null)
             {
-                _ = _secrets.Remove(item);
+                _secrets.Remove(item);
                 Save();
             }
         }

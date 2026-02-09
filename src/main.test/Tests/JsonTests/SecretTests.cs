@@ -26,12 +26,12 @@ namespace PKISharp.WACS.UnitTests.Tests.JsonTests
             var log = new Mock.Services.LogService();
             var assembly = new AssemblyService(log);
             var plugin = new PluginService(log, assembly);
-            _ = builder.RegisterType<MockSettingsService>().As<ISettingsService>();
-            _ = builder.RegisterInstance(assembly).As<AssemblyService>().SingleInstance();
-            _ = builder.RegisterInstance(log).As<ILogService>();
-            _ = builder.RegisterType<FtpJson>();
-            _ = builder.RegisterInstance(plugin).As<IPluginService>().SingleInstance();
-            _ = builder.Register(c => (ISharingLifetimeScope)c.Resolve<ILifetimeScope>()).As<ISharingLifetimeScope>().ExternallyOwned();
+            builder.RegisterType<MockSettingsService>().As<ISettingsService>();
+            builder.RegisterInstance(assembly).As<AssemblyService>().SingleInstance();
+            builder.RegisterInstance(log).As<ILogService>();
+            builder.RegisterType<FtpJson>();
+            builder.RegisterInstance(plugin).As<IPluginService>().SingleInstance();
+            builder.Register(c => (ISharingLifetimeScope)c.Resolve<ILifetimeScope>()).As<ISharingLifetimeScope>().ExternallyOwned();
             WacsJson.Configure(builder);
             _container = builder.Build();
             _plugin = _container.Resolve<IPluginService>();

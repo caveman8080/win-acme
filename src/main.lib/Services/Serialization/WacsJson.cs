@@ -30,12 +30,12 @@ namespace PKISharp.WACS.Services.Serialization
         public static WacsJson Insensitive => new(new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
         public static void Configure(ContainerBuilder builder)
         {
-            _ = builder.RegisterType<PluginOptionsConverter>().SingleInstance();
-            _ = builder.RegisterType<PluginOptionsListConverter>().SingleInstance();
-            _ = builder.RegisterType<WacsJson>().SingleInstance();
-            _ = builder.RegisterType<WacsJsonOptionsFactory>().SingleInstance();
-            _ = builder.RegisterType<WacsJsonPluginsOptionsFactory>().SingleInstance();
-            _ = builder.RegisterType<WacsJsonPlugins>().SingleInstance();
+            builder.RegisterType<PluginOptionsConverter>().SingleInstance();
+            builder.RegisterType<PluginOptionsListConverter>().SingleInstance();
+            builder.RegisterType<WacsJson>().SingleInstance();
+            builder.RegisterType<WacsJsonOptionsFactory>().SingleInstance();
+            builder.RegisterType<WacsJsonPluginsOptionsFactory>().SingleInstance();
+            builder.RegisterType<WacsJsonPlugins>().SingleInstance();
         }
     }
 }

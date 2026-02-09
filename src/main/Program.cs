@@ -82,7 +82,7 @@ namespace PKISharp.WACS.Host
                 logger.Warning("Another instance of wacs.exe is already running, waiting for that to close...");
                 try
                 {
-                    _ = _globalMutex.WaitOne();
+                    _globalMutex.WaitOne();
                 } 
                 catch (AbandonedMutexException)
                 {
@@ -101,7 +101,7 @@ namespace PKISharp.WACS.Host
             if (Environment.UserInteractive)
             {
                 Console.WriteLine(" Press <Enter> to close");
-                _ = Console.ReadLine();
+                Console.ReadLine();
             }
         }
 

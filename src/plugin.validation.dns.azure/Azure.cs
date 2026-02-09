@@ -120,7 +120,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Dns
             var removeList = txtResource.DnsTxtRecords.Where(x => x.Values.Contains(record.Value)).ToList();
             foreach (var remove in removeList)
             {
-                _ = txtResource.DnsTxtRecords.Remove(remove);
+                txtResource.DnsTxtRecords.Remove(remove);
             }
         }
 
@@ -157,12 +157,12 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Dns
                     var existing = await txtRecordCollection.GetAsync(domain);
                     if (existing != null)
                     {
-                        _ = await existing.Value.DeleteAsync(WaitUntil.Started);
+                        await existing.Value.DeleteAsync(WaitUntil.Started);
                     }
                 }
                 else
                 {
-                    _ = await txtRecordCollection.CreateOrUpdateAsync(WaitUntil.Completed, domain, txtRecords);
+                    await txtRecordCollection.CreateOrUpdateAsync(WaitUntil.Completed, domain, txtRecords);
                 }
             } 
             catch (Exception ex)

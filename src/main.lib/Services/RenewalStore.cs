@@ -121,7 +121,7 @@ namespace PKISharp.WACS.Services
         public void Clear()
         {
             var renewals = Renewals;
-            _ = renewals.All(x => x.Deleted = true);
+            renewals.All(x => x.Deleted = true);
             Renewals = renewals;
             _log.Warning("All renewals cancelled");
         }

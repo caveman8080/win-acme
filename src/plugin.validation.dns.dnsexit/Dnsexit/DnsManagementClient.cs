@@ -54,7 +54,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Dnsexit
                 var response = await client.PostAsync("", httpContent);
                 if (response.StatusCode == HttpStatusCode.OK || response.StatusCode == HttpStatusCode.NoContent)
                 {
-                    _ = await response.Content.ReadAsStringAsync();
+                    await response.Content.ReadAsStringAsync();
                 }
                 else
                 {

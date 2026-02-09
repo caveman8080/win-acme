@@ -230,7 +230,7 @@ namespace PKISharp.WACS.Services
                 actionPath = $"\"{actionPath}\"";
             }
             var workingPath = WorkingDirectory;
-            _ = task.Actions.Add(new ExecAction(actionPath, Arguments, workingPath));
+            task.Actions.Add(new ExecAction(actionPath, Arguments, workingPath));
 
             task.Principal.RunLevel = TaskRunLevel.Highest;
             while (true)
