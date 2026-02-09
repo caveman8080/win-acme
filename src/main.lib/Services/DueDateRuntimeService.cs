@@ -126,7 +126,7 @@ namespace PKISharp.WACS.Services
             }
 
             // Basic rule for start: End - RenewalDaysRange
-            var start = end.AddDays((_settings.ScheduledTask.RenewalDaysRange ?? 0) * -1);
+            var start = end.AddDays(-1.0 * (_settings.ScheduledTask.RenewalDaysRange ?? 0));
             var startSource = "rd";
 
             // Guard rail #3: server might feel the renewal should happen even earlier,
