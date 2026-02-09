@@ -292,7 +292,7 @@ namespace PKISharp.WACS.Clients.Acme
             }
 
             var newAccount = _accountManager.NewAccount();
-            var newAccountDetails = default(AccountDetails);
+            var newAccountDetails = (AccountDetails?)null;
             try
             {
                 newAccountDetails = await CreateAccount(client, newAccount.Signer, contacts, eabAlg, eabKid, eabKey);
@@ -320,11 +320,11 @@ namespace PKISharp.WACS.Clients.Acme
                 _log.Error(ex, ex.Message);
                 return null;
             }
-            if (newAccountDetails == default)
+            if (newAccountDetails == null)
             {
                 return null;
             }
-            return new Account(newAccountDetails, newAccount.Signer);
+            return new Account(newAccountDetails.Value, newAccount.Signer);
         }
 
         /// <summary>
@@ -337,7 +337,7 @@ namespace PKISharp.WACS.Clients.Acme
         /// <param name="eabKid"></param>
         /// <param name="eabKey"></param>
         /// <returns></returns>
-        private async Task<AccountDetails> CreateAccount(
+        private async Task<AccountDetails?> CreateAccount(
             AcmeProtocolClient client, AccountSigner signer,
             string[]? contacts,
             string eabAlg, string? eabKid, string? eabKey)
@@ -475,7 +475,7 @@ namespace PKISharp.WACS.Clients.Acme
             var newDetails = await client.UpdateAccountAsync(contacts);
             if (newDetails != null)
             {
-                client.Account.Details = newDetails;
+                client.Account.Details = newDetails.Value;
                 _accountManager.StoreAccount(client.Account, name);
             }
         }

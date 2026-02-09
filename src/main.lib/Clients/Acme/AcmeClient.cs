@@ -301,7 +301,7 @@ namespace PKISharp.WACS.Clients.Acme
         /// Check account details
         /// </summary>
         /// <returns></returns>
-        internal async Task<AccountDetails> CheckAccount() =>
+        internal async Task<AccountDetails?> CheckAccount() =>
             await _client.Retry(() => _client.CheckAccountAsync(), _log);
 
         /// <summary>
@@ -309,7 +309,7 @@ namespace PKISharp.WACS.Clients.Acme
         /// </summary>
         /// <param name="contacts"></param>
         /// <returns></returns>
-        internal async Task<AccountDetails> UpdateAccountAsync(string[]? contacts) =>
+        internal async Task<AccountDetails?> UpdateAccountAsync(string[]? contacts) =>
             await _client.Retry(() => _client.UpdateAccountAsync(contacts), _log);
     }
 }

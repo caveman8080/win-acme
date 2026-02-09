@@ -77,7 +77,7 @@ namespace PKISharp.WACS.Clients.Acme
             var detailsPath = GetPath(RegistrationFileName, name);
             var signer = LoadSigner(signerPath);
             var details = LoadDetails(detailsPath);
-            if (details == default)
+            if (details == null)
             {
                 return null;
             }
@@ -85,7 +85,7 @@ namespace PKISharp.WACS.Clients.Acme
             {
                 return null;
             }
-            return new Account(details, signer);
+            return new Account(details.Value, signer);
         }
 
         /// <summary>
@@ -179,7 +179,7 @@ namespace PKISharp.WACS.Clients.Acme
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        private AccountDetails LoadDetails(string path)
+        private AccountDetails? LoadDetails(string path)
         {
             if (File.Exists(path))
             {
@@ -190,7 +190,7 @@ namespace PKISharp.WACS.Clients.Acme
             {
                 _log.Debug("Details not found at {path}", path);
             }
-            return default;
+            return null;
         }
 
         /// <summary>
@@ -198,12 +198,12 @@ namespace PKISharp.WACS.Clients.Acme
         /// </summary>
         /// <param name="details"></param>
         /// <param name="path"></param>
-        private void StoreDetails(AccountDetails details, string path)
+        private void StoreDetails(AccountDetails? details, string path)
         {
-            if (details != default)
+            if (details != null)
             {
                 _log.Debug("Saving account to {AccountPath}", path);
-                File.WriteAllText(path, JsonSerializer.Serialize(details, AcmeClientJson.Insensitive.AccountDetails));
+                File.WriteAllText(path, JsonSerializer.Serialize(details.Value, AcmeClientJson.Insensitive.AccountDetails));
             }
         }
 
