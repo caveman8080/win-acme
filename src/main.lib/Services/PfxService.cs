@@ -71,13 +71,15 @@ namespace PKISharp.WACS.Services
             {
                 return original;
             }
-            var stream = new MemoryStream();
-            var password = PasswordGenerator.Generate().ToCharArray();
-            original.Store.Save(stream, password, new SecureRandom());
-            stream.Seek(0, SeekOrigin.Begin);
-            var ret = GetPfx(protection);
-            ret.Store.Load(stream, password);
-            return ret;
+            using (var stream = new MemoryStream())
+            {
+                var password = PasswordGenerator.Generate().ToCharArray();
+                original.Store.Save(stream, password, new SecureRandom());
+                stream.Seek(0, SeekOrigin.Begin);
+                var ret = GetPfx(protection);
+                ret.Store.Load(stream, password);
+                return ret;
+            }
         }
     }
 }
