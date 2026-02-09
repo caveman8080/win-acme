@@ -4,7 +4,6 @@ using PKISharp.WACS.Plugins.Interfaces;
 using PKISharp.WACS.Services;
 using System;
 using System.Collections.Generic;
-using System.Collections.Concurrent;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -57,7 +56,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Dns
         }
 
         private static readonly Uri _LuaDnsApiEndpoint = new("https://api.luadns.com/v1/", UriKind.Absolute);
-        private static readonly ConcurrentDictionary<string, RecordData> _recordsMap = new();
+        private static readonly Dictionary<string, RecordData> _recordsMap = new();
 
         private readonly IProxyService _proxyService;
 
