@@ -17,17 +17,19 @@ namespace PKISharp.WACS.Services
             string pem;
             using (var tw = new StringWriter())
             {
-                var pw = new openssl.PemWriter(tw);
-                if (string.IsNullOrEmpty(password))
+                using (var pw = new openssl.PemWriter(tw))
                 {
-                    pw.WriteObject(obj);
-                } 
-                else
-                {
-                    pw.WriteObject(obj, "AES-256-CBC", password.ToCharArray(), new SecureRandom());
+                    if (string.IsNullOrEmpty(password))
+                    {
+                        pw.WriteObject(obj);
+                    } 
+                    else
+                    {
+                        pw.WriteObject(obj, "AES-256-CBC", password.ToCharArray(), new SecureRandom());
+                    }
+                    pem = tw.GetStringBuilder().ToString();
+                    tw.GetStringBuilder().Clear();
                 }
-                pem = tw.GetStringBuilder().ToString();
-                tw.GetStringBuilder().Clear();
             }
             return pem;
         }
