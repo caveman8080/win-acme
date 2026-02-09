@@ -30,7 +30,7 @@ namespace PKISharp.WACS.Clients.Acme
         /// <returns></returns>
         public async Task<ZeroSslEabCredential?> Register(string email)
         {
-            var formContent = new FormUrlEncodedContent(new[]
+            using var formContent = new FormUrlEncodedContent(new[]
             {
                 new KeyValuePair<string?, string?>("email", email)
             });
