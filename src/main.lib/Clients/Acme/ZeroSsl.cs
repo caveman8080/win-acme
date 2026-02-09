@@ -79,7 +79,8 @@ namespace PKISharp.WACS.Clients.Acme
         {
             try
             {
-                var response = await _httpClient.PostAsync($"https://api.zerossl.com/acme/eab-credentials?access_key={accessKey}", new StringContent(""));
+                using var requestContent = new StringContent(string.Empty);
+                var response = await _httpClient.PostAsync($"https://api.zerossl.com/acme/eab-credentials?access_key={accessKey}", requestContent);
                 if (response.IsSuccessStatusCode)
                 {
                     var content = await response.Content.ReadAsStringAsync();
