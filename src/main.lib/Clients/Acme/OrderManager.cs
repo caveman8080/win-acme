@@ -361,7 +361,7 @@ namespace PKISharp.WACS.Clients.Acme
         /// Test if a cached order file is still usable
         /// </summary>
         /// <returns></returns>
-        private bool IsValid(FileInfo order) => order.LastWriteTime > DateTime.Now.AddDays(_settings.Cache.ReuseDays * -1);
+        private bool IsValid(FileInfo order) => order.LastWriteTime > DateTime.Now.AddDays(-1.0 * _settings.Cache.ReuseDays);
 
         /// <summary>
         /// Save order to disk
