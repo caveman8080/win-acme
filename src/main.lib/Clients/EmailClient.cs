@@ -137,11 +137,13 @@ namespace PKISharp.WACS.Clients
             {
                 _log.Error(ex, "Problem sending e-mail");
                 logStream.Position = 0;
-                var logReader = new StreamReader(logStream);
-                var logOutput = logReader.ReadToEnd();
-                if (!string.IsNullOrWhiteSpace(logOutput))
+                using (var logReader = new StreamReader(logStream))
                 {
-                    _log.Debug(logOutput);
+                    var logOutput = logReader.ReadToEnd();
+                    if (!string.IsNullOrWhiteSpace(logOutput))
+                    {
+                        _log.Debug(logOutput);
+                    }
                 }
                 return false;
             }
