@@ -349,7 +349,7 @@ namespace PKISharp.WACS.Plugins.StorePlugins
                 Flags = cspFlags,
                 ProviderType = 12 // Microsoft RSA SChannel Cryptographic Provider
             };
-            var rsaProvider = new RSACryptoServiceProvider(cspParameters);
+            using var rsaProvider = new RSACryptoServiceProvider(cspParameters);
             var parameters = tempRsa.ExportParameters(true);
             rsaProvider.ImportParameters(parameters);
 
