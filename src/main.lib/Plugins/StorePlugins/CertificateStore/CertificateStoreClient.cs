@@ -353,10 +353,12 @@ namespace PKISharp.WACS.Plugins.StorePlugins
             var parameters = tempRsa.ExportParameters(true);
             rsaProvider.ImportParameters(parameters);
 
-            var tempPfx = new X509Certificate2(original.Export(X509ContentType.Cert, password), password, flags);
-            tempPfx = tempPfx.CopyWithPrivateKey(rsaProvider);
-            tempPfx.FriendlyName = original.FriendlyName;
-            return tempPfx;
+            using (var tempPfx = new X509Certificate2(original.Export(X509ContentType.Cert, password), password, flags))
+            {
+                var result = tempPfx.CopyWithPrivateKey(rsaProvider);
+                result.FriendlyName = original.FriendlyName;
+                return result;
+            }
         }
 
         /// <summary>
