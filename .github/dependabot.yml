@@ -7,7 +7,10 @@ version: 2
 updates:
   # Enable version updates for NuGet
   - package-ecosystem: "nuget"
-    directory: "**/**"
+    # Location of the manifest files
+    directories:
+      - "/src/**"
+    # Optionally, you can specify a schedule for when Dependabot checks for updates.
     schedule:
       interval: "monthly"
     # Raise all NuGet pull requests with assignees
