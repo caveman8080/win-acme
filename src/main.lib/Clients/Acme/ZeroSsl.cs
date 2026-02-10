@@ -115,9 +115,13 @@ namespace PKISharp.WACS.Clients.Acme
                     _log.Error("Unexpected response while attemting to obtain credential from ZeroSsl");
                 }
             }
-            catch (Exception ex)
+            catch (HttpRequestException ex)
             {
-                _log.Error(ex, "Unexpected error while attemting to obtain credential from ZeroSsl");
+                _log.Error(ex, "HTTP error while attemting to obtain credential from ZeroSsl");
+            }
+            catch (JsonException ex)
+            {
+                _log.Error(ex, "Invalid JSON response while attemting to obtain credential from ZeroSsl");
             }
 
             return null;
