@@ -10,3 +10,6 @@ updates:
     directory: "/"
     schedule:
       interval: "monthly"
+    # Raise all NuGet pull requests with assignees
+    assignees:
+      - "caveman8080"
