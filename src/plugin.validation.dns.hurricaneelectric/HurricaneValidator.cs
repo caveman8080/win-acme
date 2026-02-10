@@ -8,7 +8,7 @@ using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using System.Web;
 
-// Optimized: Replaced generic Exception throw with InvalidOperationException for better exception specificity.
+// Optimized: Replaced generic Exception throw with InvalidOperationException for better exception specificity. Inlined content variable in GetTxtRecord method.
 
 [assembly: SupportedOSPlatform("windows")]
 
@@ -50,8 +50,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Dns
             var url = $"https://dyn.dns.he.net/nic/update?{query}";
             var response = await _hc.GetAsync(url);
             response.EnsureSuccessStatusCode();
-            var content = await response.Content.ReadAsStringAsync();
-            return content.Trim();
+            return (await response.Content.ReadAsStringAsync()).Trim();
         }
 
         public override async Task<bool> CreateRecord(DnsValidationRecord record)

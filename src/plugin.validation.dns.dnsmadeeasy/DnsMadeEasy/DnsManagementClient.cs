@@ -10,6 +10,8 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
+// Optimized: Inlined json and content variables in GetDomainId and GetRecordIds methods to reduce unnecessary variable declarations.
+
 namespace PKISharp.WACS.Plugins.ValidationPlugins.DnsMadeEasy
 {
     public class DnsManagementClient
@@ -37,8 +39,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.DnsMadeEasy
             var response = await client.GetAsync(buildApiUrl);
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                string json = await response.Content.ReadAsStringAsync();
-                var request = JsonConvert.DeserializeObject<DomainResponse>(json);
+                var request = JsonConvert.DeserializeObject<DomainResponse>(await response.Content.ReadAsStringAsync());
 
                 if (request == null || request.id == null)
                     throw new ArgumentNullException($"Unexpected null response for {domain}");
@@ -50,8 +51,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.DnsMadeEasy
             }
             else
             {
-                var content = await response.Content.ReadAsStringAsync();
-                throw new Exception(content);
+                throw new InvalidOperationException(await response.Content.ReadAsStringAsync());
             }
         }
         class DomainResponse
@@ -72,8 +72,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.DnsMadeEasy
             var response = await client.GetAsync(buildApiUrl);
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                string json = await response.Content.ReadAsStringAsync();
-                var request = JsonConvert.DeserializeObject<DomainResponseCollection>(json);
+                var request = JsonConvert.DeserializeObject<DomainResponseCollection>(await response.Content.ReadAsStringAsync());
 
                 if (request == null || request.data == null || request.data.Length == 0)
                     return Array.Empty<string>();
@@ -93,8 +92,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.DnsMadeEasy
             }
             else
             {
-                var content = await response.Content.ReadAsStringAsync();
-                throw new Exception(content);
+                throw new InvalidOperationException(await response.Content.ReadAsStringAsync());
             }
         }
         class DomainResponseCollection

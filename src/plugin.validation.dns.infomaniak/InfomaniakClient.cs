@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using PKISharp.WACS.Plugins.ValidationPlugins.Models;
 
+// Optimized: Inlined json and content variables in GetDomainId and DeleteRecord methods to reduce unnecessary variable declarations.
+
 namespace PKISharp.WACS.Plugins.ValidationPlugins;
 
 internal class InfomaniakClient
@@ -29,8 +31,7 @@ internal class InfomaniakClient
     {
         var apiUrl = $"/1/product?service_name=domain&customer_name={domain}";
         var response = await _httpClient.GetAsync(apiUrl);
-        var json = await response.Content.ReadAsStringAsync();
-        var domainList = JsonConvert.DeserializeObject<DomainListResponse>(json);
+        var domainList = JsonConvert.DeserializeObject<DomainListResponse>(await response.Content.ReadAsStringAsync());
 
         var domainId = domainList?.Data?.FirstOrDefault(x => x.CustomerName == domain)?.Id ?? 0;
         if (domainId == 0)
@@ -90,8 +91,7 @@ internal class InfomaniakClient
             return;
         }
         
-        var content = await response.Content.ReadAsStringAsync();
-        _log.Error($"Infomaniak did not delete record. Request Failure : {content}");
+        _log.Error($"Infomaniak did not delete record. Request Failure : {await response.Content.ReadAsStringAsync()}");
         response.EnsureSuccessStatusCode();
     }
 }

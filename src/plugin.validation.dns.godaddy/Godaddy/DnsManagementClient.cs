@@ -7,7 +7,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
-// Optimized: Replaced generic Exception throws with InvalidOperationException for better exception specificity.
+// Optimized: Replaced generic Exception throws with InvalidOperationException for better exception specificity. Inlined content variables and removed unused reads in CreateRecord and DeleteRecord methods.
 
 namespace PKISharp.WACS.Plugins.ValidationPlugins.Godaddy
 {
@@ -53,12 +53,11 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Godaddy
                 var response = await client.PutAsync(buildApiUrl, httpContent);
                 if (response.StatusCode == HttpStatusCode.OK || response.StatusCode == HttpStatusCode.NoContent)
                 {
-                    await response.Content.ReadAsStringAsync();
+                    // Response content not needed
                 }
                 else
                 {
-                    var content = await response.Content.ReadAsStringAsync();
-                    throw new InvalidOperationException(content);
+                    throw new InvalidOperationException(await response.Content.ReadAsStringAsync());
                 }
 
 
@@ -87,15 +86,11 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Godaddy
                 var response = await client.DeleteAsync(buildApiUrl);
                 if (response.StatusCode == HttpStatusCode.OK || response.StatusCode == HttpStatusCode.NoContent)
                 {
-                    var content = await response.Content.ReadAsStringAsync();
-                    //_logService.Information("Godaddy Delete Responded with: {0}", content);
-                    //_logService.Information("Waiting for 30 seconds");
-                    //await Task.Delay(30000);
+                    // Response content not needed (commented logging)
                 }
                 else
                 {
-                    var content = await response.Content.ReadAsStringAsync();
-                    throw new InvalidOperationException(content);
+                    throw new InvalidOperationException(await response.Content.ReadAsStringAsync());
                 }
             };
         }

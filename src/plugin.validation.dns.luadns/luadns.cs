@@ -14,6 +14,8 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
+// Optimized: Inlined payload variables in GetZones and CreateRecord methods to reduce unnecessary variable declarations.
+
 [assembly: SupportedOSPlatform("windows")]
 
 namespace PKISharp.WACS.Plugins.ValidationPlugins.Dns
@@ -89,8 +91,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Dns
                 return false;
             }
 
-            var payload = await response.Content.ReadAsStringAsync();
-            var zones = JsonSerializer.Deserialize<ZoneData[]>(payload);
+            var zones = JsonSerializer.Deserialize<ZoneData[]>(await response.Content.ReadAsStringAsync());
             if (zones == null || zones.Any(x => x.Name == null))
             {
                 _log.Error("Empty or invalid response. Aborting");
@@ -104,7 +105,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Dns
             }
 
             var newRecord = new RecordData { Name = $"{record.Authority.Domain}.", Type = "TXT", Content = record.Value, TTL = 300 };
-            payload = JsonSerializer.Serialize(newRecord);
+            var payload = JsonSerializer.Serialize(newRecord);
 
             response = await client.PostAsync(new Uri(_LuaDnsApiEndpoint, $"zones/{targetZone.Id}/records"), new StringContent(payload, Encoding.UTF8, "application/json"));
             if (!response.IsSuccessStatusCode)
@@ -113,8 +114,8 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Dns
                 return false;
             }
 
-            payload = await response.Content.ReadAsStringAsync();
-            newRecord = JsonSerializer.Deserialize<RecordData>(payload);
+            var responsePayload = await response.Content.ReadAsStringAsync();
+            newRecord = JsonSerializer.Deserialize<RecordData>(responsePayload);
             if (newRecord == null)
             {
                 _log.Error("Empty or invalid response");

@@ -7,6 +7,8 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
+// Optimized: Inlined content variable in Register and Obtain methods to reduce unnecessary variable declarations.
+
 namespace PKISharp.WACS.Clients.Acme
 {
     /// <summary>
@@ -39,8 +41,7 @@ namespace PKISharp.WACS.Clients.Acme
                 var response = await _httpClient.PostAsync("https://api.zerossl.com/acme/eab-credentials-email", formContent);
                 if (response.IsSuccessStatusCode)
                 {
-                    var content = await response.Content.ReadAsStringAsync();
-                    var result = JsonSerializer.Deserialize(content, WacsJson.Insensitive.ZeroSslEabCredential);
+                    var result = JsonSerializer.Deserialize(await response.Content.ReadAsStringAsync(), WacsJson.Insensitive.ZeroSslEabCredential);
                     if (result == null)
                     {
                         _log.Error("Unexpected response while attemting to register at ZeroSsl");
@@ -83,8 +84,7 @@ namespace PKISharp.WACS.Clients.Acme
                 var response = await _httpClient.PostAsync($"https://api.zerossl.com/acme/eab-credentials?access_key={accessKey}", requestContent);
                 if (response.IsSuccessStatusCode)
                 {
-                    var content = await response.Content.ReadAsStringAsync();
-                    var result = JsonSerializer.Deserialize(content, WacsJson.Insensitive.ZeroSslEabCredential);
+                    var result = JsonSerializer.Deserialize(await response.Content.ReadAsStringAsync(), WacsJson.Insensitive.ZeroSslEabCredential);
                     if (result == null)
                     {
                         _log.Error("Invalid response while attemting to obtain credential from ZeroSsl");

@@ -3,6 +3,8 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 
+// Optimized: Inlined json variable in GetDomainId method to reduce unnecessary variable declarations.
+
 namespace PKISharp.WACS.Plugins.ValidationPlugins.Linode
 {
     public class DnsManagementClient
@@ -24,8 +26,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Linode
         {
             var apiUrl = $"v4/domains";
             var response = await _httpClient.GetAsync(apiUrl);
-            var json = await response.Content.ReadAsStringAsync();
-            var domainList = Newtonsoft.Json.JsonConvert.DeserializeObject<DomainListResponse>(json);
+            var domainList = Newtonsoft.Json.JsonConvert.DeserializeObject<DomainListResponse>(await response.Content.ReadAsStringAsync());
 
             var domainId = domainList?.data?.FirstOrDefault(x => x.domain == domain)?.id ?? 0;
             if (domainId == 0)

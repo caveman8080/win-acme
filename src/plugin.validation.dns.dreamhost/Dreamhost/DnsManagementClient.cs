@@ -6,6 +6,8 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
+// Optimized: Inlined content variables in CreateRecord and DeleteRecord methods to reduce unnecessary variable declarations.
+
 namespace PKISharp.WACS.Plugins.ValidationPlugins.Dreamhost
 {
     public class DnsManagementClient
@@ -29,8 +31,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Dreamhost
                     {"type", type.ToString()},
                     {"value", value}
                 });
-            var content = await response.Content.ReadAsStringAsync();
-            _logService.Information("Dreamhost Responded with: {0}", content);
+            _logService.Information("Dreamhost Responded with: {0}", await response.Content.ReadAsStringAsync());
             _logService.Information("Waiting for 30 seconds");
             await Task.Delay(30000);
         }
@@ -44,8 +45,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Dreamhost
                 {"value", value}
             };
             var response = await SendRequest("dns-remove_record", args);
-            var content = await response.Content.ReadAsStringAsync();
-            _logService.Information("Dreamhost Responded with: {0}", content);
+            _logService.Information("Dreamhost Responded with: {0}", await response.Content.ReadAsStringAsync());
             _logService.Information("Waiting for 30 seconds");
             await Task.Delay(30000);
         }
