@@ -324,7 +324,7 @@ namespace PKISharp.WACS.Clients.Acme
                 var order = JsonSerializer.Deserialize(content, AcmeClientJson.Insensitive.AcmeOrderDetails);
                 return order;
             } 
-            catch (Exception ex)
+            catch (Exception ex) when (ex is IOException || ex is JsonException || ex is UnauthorizedAccessException)
             {
                 _log.Warning("Unable to read order cache: {ex}", ex.Message);
             }
@@ -350,7 +350,7 @@ namespace PKISharp.WACS.Clients.Acme
                         {
                             order.Delete();
                         }
-                        catch (Exception ex)
+                        catch (Exception ex) when (ex is IOException || ex is UnauthorizedAccessException)
                         {
                             _log.Debug("Unable to clean up order cache: {ex}", ex.Message);
                         }
@@ -385,7 +385,7 @@ namespace PKISharp.WACS.Clients.Acme
                 var path = Path.Combine(_orderPath.FullName, $"{cacheKey}.{_orderFileExtension}");
                 await File.WriteAllTextAsync(path, content);
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is IOException || ex is JsonException || ex is UnauthorizedAccessException)
             {
                 _log.Warning("Unable to write to order cache: {ex}", ex.Message);
             }
