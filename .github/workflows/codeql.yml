@@ -17,38 +17,18 @@ on:
       - '**/*.md'
       - '**/*.txt'
       - '**/*.yml'
-      - '**/Ddebug/**'
-      - '**/DebugPublic/**'
-      - '**/Release/**'
-      - '**/Rreleases/**'
-      - '**/x64/**'
-      - '**/x86/**'
-      - '**/bld/**'
       - '**/bin/**'
       - '**/obj/**'
-      - '**/TestResult*/**'
-      - '**/BuildLog.*'
-      - '**/DebugPS/**'
-      - '**/ReleasePS/**'
+      - '**/TestResults/**'
     branches: [ "master" ]
   pull_request:
     paths-ignore:
       - '**/*.md'
       - '**/*.txt'
       - '**/*.yml'
-      - '**/Ddebug/**'
-      - '**/DebugPublic/**'
-      - '**/Release/**'
-      - '**/Rreleases/**'
-      - '**/x64/**'
-      - '**/x86/**'
-      - '**/bld/**'
       - '**/bin/**'
       - '**/obj/**'
-      - '**/TestResult*/**'
-      - '**/BuildLog.*'
-      - '**/DebugPS/**'
-      - '**/ReleasePS/**'
+      - '**/TestResults/**'
     branches: [ "master" ]
   schedule:
     - cron: '36 2 * * 3'
@@ -98,13 +78,13 @@ jobs:
       with:
         dotnet-version: '8.0.x'
 
-#    - name: Cache NuGet packages
-#      uses: actions/cache@v4
-#      with:
-#        path: ~/.nuget/packages
-#        key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
-#        restore-keys: |
-#          ${{ runner.os }}-nuget-
+    - name: Cache NuGet packages
+      uses: actions/cache@v4
+      with:
+        path: ~/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget-
         
 
     # Add any setup steps before running the `github/codeql-action/init` action.
