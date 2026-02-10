@@ -64,7 +64,15 @@ namespace PKISharp.WACS.Clients.Acme
                     _log.Error("Unexpected response while attemting to register at ZeroSsl");
                 }
             }
-            catch (Exception ex)
+            catch (HttpRequestException ex)
+            {
+                _log.Error(ex, "Unexpected error while attemting to register at ZeroSsl");
+            }
+            catch (TaskCanceledException ex)
+            {
+                _log.Error(ex, "Unexpected error while attemting to register at ZeroSsl");
+            }
+            catch (JsonException ex)
             {
                 _log.Error(ex, "Unexpected error while attemting to register at ZeroSsl");
             }
