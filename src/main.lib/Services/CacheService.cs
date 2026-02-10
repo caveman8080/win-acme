@@ -161,7 +161,7 @@ namespace PKISharp.WACS.Services
         /// <param name="prefix"></param>
         /// <returns></returns>
         private string GetPath(Renewal renewal, string postfix, string prefix = "") =>
-            Path.Combine(_cache.FullName, $"{prefix}{renewal.Id}{postfix}");
+            Path.Join(_cache.FullName, $"{prefix}{renewal.Id}{postfix}");
 
         /// <summary>
         /// Read from the disk cache, only returns exact match

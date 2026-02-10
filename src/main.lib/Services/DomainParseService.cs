@@ -23,7 +23,7 @@ namespace PKISharp.WACS.Services
         private async Task<DomainParser> CreateParser()
         {
             var provider = default(IRuleProvider);
-            var path = Path.Combine(VersionService.ResourcePath, "public_suffix_list.dat");
+            var path = Path.Join(VersionService.ResourcePath, "public_suffix_list.dat");
             try
             {
                 var fileProvider = new LocalFileRuleProvider(path);
@@ -78,7 +78,7 @@ namespace PKISharp.WACS.Services
             public FileCacheProvider(ILogService log, ISettingsService settings)
             {
                 _log = log;
-                var path = Path.Combine(settings.Client.ConfigurationPath, "public_suffix_list.dat");
+                var path = Path.Join(settings.Client.ConfigurationPath, "public_suffix_list.dat");
                 _file = new FileInfo(path);
             }
 

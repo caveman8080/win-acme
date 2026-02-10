@@ -48,7 +48,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins
         /// <summary>
         /// Where to find the template for the web.config that's copied to the webroot
         /// </summary>
-        protected static string TemplateWebConfig => Path.Combine(VersionService.ResourcePath, "web_config.xml");
+        protected static string TemplateWebConfig => Path.Join(VersionService.ResourcePath, "web_config.xml");
 
         /// <summary>
         /// Character to separate folders, different for FTP 

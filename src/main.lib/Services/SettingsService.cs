@@ -24,15 +24,15 @@ namespace PKISharp.WACS.Services
             var settingsFileName = "settings.json";
             var settingsFileTemplateName = "settings_default.json";
             _log.Verbose("Looking for {settingsFileName} in {path}", settingsFileName, VersionService.SettingsPath);
-            var settings = new FileInfo(Path.Combine(VersionService.SettingsPath, settingsFileName));
-            var settingsTemplate = new FileInfo(Path.Combine(VersionService.ResourcePath, settingsFileTemplateName));
+            var settings = new FileInfo(Path.Join(VersionService.SettingsPath, settingsFileName));
+            var settingsTemplate = new FileInfo(Path.Join(VersionService.ResourcePath, settingsFileTemplateName));
             var useFile = settings;
             if (!settings.Exists)
             {
                 if (!settingsTemplate.Exists)
                 {
                     // For .NET tool case
-                    settingsTemplate = new FileInfo(Path.Combine(VersionService.ResourcePath, settingsFileName));
+                    settingsTemplate = new FileInfo(Path.Join(VersionService.ResourcePath, settingsFileName));
                 }
                 if (!settingsTemplate.Exists)
                 {
@@ -101,7 +101,7 @@ namespace PKISharp.WACS.Services
             }
 
             var configRoot = ChooseConfigPath();
-            Client.ConfigurationPath = Path.Combine(configRoot, BaseUri.CleanUri());
+            Client.ConfigurationPath = Path.Join(configRoot, BaseUri.CleanUri());
             Client.LogPath = ChooseLogPath();
             Cache.Path = ChooseCachePath();
 
@@ -150,7 +150,7 @@ namespace PKISharp.WACS.Services
                 // check for possible sub directories with client name
                 // to keep bug-compatible with older releases that
                 // created a subfolder inside of the users chosen config path
-                var configRootWithClient = Path.Combine(userRoot, Client.ClientName);
+                var configRootWithClient = Path.Join(userRoot, Client.ClientName);
                 if (Directory.Exists(configRootWithClient))
                 {
                     configRoot = configRootWithClient;
@@ -159,7 +159,7 @@ namespace PKISharp.WACS.Services
             else
             {
                 var appData = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
-                configRoot = Path.Combine(appData, Client.ClientName);
+                configRoot = Path.Join(appData, Client.ClientName);
             }
             return configRoot;
         }
@@ -171,12 +171,12 @@ namespace PKISharp.WACS.Services
         {
             if (string.IsNullOrWhiteSpace(Client.LogPath))
             {
-                return Path.Combine(Client.ConfigurationPath, "Log");
+                return Path.Join(Client.ConfigurationPath, "Log");
             }
             else
             {
                 // Create separate logs for each endpoint
-                return Path.Combine(Client.LogPath, BaseUri.CleanUri());
+                return Path.Join(Client.LogPath, BaseUri.CleanUri());
             }
         }
 
@@ -187,7 +187,7 @@ namespace PKISharp.WACS.Services
         {
             if (string.IsNullOrWhiteSpace(Cache.Path))
             {
-                return Path.Combine(Client.ConfigurationPath, "Certificates");
+                return Path.Join(Client.ConfigurationPath, "Certificates");
             }
             return Cache.Path;
         }

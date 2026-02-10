@@ -56,7 +56,7 @@ namespace PKISharp.WACS.Plugins.StorePlugins
             }
         }
 
-        private string PathForIdentifier(DnsIdentifier identifier) => Path.Combine(_path, $"{identifier.Unicode(true).Value.Replace("*", "_")}.pfx");
+        private string PathForIdentifier(DnsIdentifier identifier) => Path.Join(_path, $"{identifier.Unicode(true).Value.Replace("*", "_")}.pfx");
 
         public async Task<StoreInfo?> Save(ICertificateInfo input)
         {

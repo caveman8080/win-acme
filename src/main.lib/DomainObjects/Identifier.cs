@@ -101,7 +101,10 @@ namespace PKISharp.WACS.DomainObjects
                     Value = ip.ToString();
                     return;
                 }
-                catch {}
+                catch (Exception ex)
+                {
+                    throw new ArgumentException("Value is not recognized as a valid IP address", ex);
+                }
             }
             throw new ArgumentException("Value is not recognized as a valid IP address");
         }

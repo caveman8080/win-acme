@@ -56,7 +56,6 @@ namespace PKISharp.WACS.Services.Legacy
 
         /// <summary>
         /// Warmup target website (applies to http-01 validation)
-        /// TODO: remove
         /// </summary>
         public bool Warmup { get; set; }
 

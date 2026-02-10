@@ -63,7 +63,7 @@ namespace PKISharp.WACS.Plugins.StorePlugins
             }
         }
 
-        private string PathForIdentifier(string identifier) => Path.Combine(_path, $"{identifier.Replace("*", "_")}.pfx");
+        private string PathForIdentifier(string identifier) => Path.Join(_path, $"{identifier.Replace("*", "_")}.pfx");
 
         /// <summary>
         /// We don't save the certificate immediately for two reasons:

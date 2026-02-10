@@ -77,7 +77,8 @@ namespace PKISharp.WACS.Configuration
                 }
 
                 // Add default when available
-                if (!string.IsNullOrWhiteSpace(commandLineInfo?.Default))
+                var defaultValue = commandLineInfo?.Default;
+                if (!string.IsNullOrWhiteSpace(defaultValue))
                 {
                     var clo = typeof(ICommandLineOptionFluent<>).MakeGenericType(property.PropertyType);
                     var setDefault = clo.GetMethod(nameof(ICommandLineOptionFluent<object>.SetDefault), new[] { property.PropertyType });
@@ -85,7 +86,7 @@ namespace PKISharp.WACS.Configuration
                     {
                         throw new InvalidOperationException();
                     }
-                    setDefault.Invoke(asResult, new[] { commandLineInfo?.Default });
+                    setDefault.Invoke(asResult, new[] { defaultValue });
                 }
             }
         }

@@ -66,7 +66,7 @@ namespace PKISharp.WACS.Plugins.StorePlugins
                 var certificateExport = input.Certificate.GetEncoded();
                 var certString = PemService.GetPem("CERTIFICATE", certificateExport);
                 var chainString = "";
-                await File.WriteAllTextAsync(Path.Combine(_path, $"{name}-crt.pem"), certString);
+                await File.WriteAllTextAsync(Path.Join(_path, $"{name}-crt.pem"), certString);
 
                 // Rest of the chain
                 foreach (var chainCertificate in input.Chain)
@@ -81,8 +81,8 @@ namespace PKISharp.WACS.Plugins.StorePlugins
                 }
 
                 // Save complete chain
-                await File.WriteAllTextAsync(Path.Combine(_path, $"{name}-chain.pem"), certString + chainString);
-                await File.WriteAllTextAsync(Path.Combine(_path, $"{name}-chain-only.pem"), chainString);
+                await File.WriteAllTextAsync(Path.Join(_path, $"{name}-chain.pem"), certString + chainString);
+                await File.WriteAllTextAsync(Path.Join(_path, $"{name}-chain-only.pem"), chainString);
 
                 // Private key
                 if (input.PrivateKey != null)

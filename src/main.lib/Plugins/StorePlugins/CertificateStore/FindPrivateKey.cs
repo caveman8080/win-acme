@@ -40,7 +40,7 @@ namespace PKISharp.WACS.Plugins.StorePlugins
                 _log.Warning("Unable to find private key folder: {ex}", ex.Message);
                 return null;
             }
-            return new FileInfo(Path.Combine(dir, file));
+            return new FileInfo(Path.Join(dir, file));
         }
 
         static string GetKeyFileName(X509Certificate2 cert)

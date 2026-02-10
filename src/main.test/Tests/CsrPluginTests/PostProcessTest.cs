@@ -25,7 +25,7 @@ namespace PKISharp.WACS.UnitTests.Tests.CsrPluginTests
             {
                 throw new Exception();
             }
-            var ms = new MemoryStream();
+            using var ms = new MemoryStream();
             data.CopyTo(ms);
             var bytes = ms.ToArray();
             var tempFile = Path.GetTempFileName();

@@ -303,9 +303,9 @@ namespace PKISharp.WACS
                 var targetBackend = targetScope.Resolve<ITargetPlugin>();
                 return await targetBackend.Generate();
             } 
-            catch
+            catch (Exception ex)
             {
-                
+                _log.Warning("Error generating target: {message}", ex.Message);
             }
             return null;
         }

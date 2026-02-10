@@ -48,9 +48,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Dnsexit
 
                 var serializedPost = Newtonsoft.Json.JsonConvert.SerializeObject(postData);
 
-                //Record successfully created
-                // Wrap our JSON inside a StringContent which then can be used by the HttpClient class
-                var httpContent = new StringContent(serializedPost, Encoding.UTF8, "application/json");
+                using var httpContent = new StringContent(serializedPost, Encoding.UTF8, "application/json");
                 var response = await client.PostAsync("", httpContent);
                 if (response.StatusCode == HttpStatusCode.OK || response.StatusCode == HttpStatusCode.NoContent)
                 {
@@ -88,7 +86,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Dnsexit
 
                 _log.Information($"Deleting {type} record, {identifier} with Dnsexit API...");
 
-                var httpContent = new StringContent(serializedObject, Encoding.UTF8, "application/json");
+                using var httpContent = new StringContent(serializedObject, Encoding.UTF8, "application/json");
                 var response = await client.PostAsync("", httpContent);
                 if (response.StatusCode == HttpStatusCode.OK || response.StatusCode == HttpStatusCode.NoContent)
                 {

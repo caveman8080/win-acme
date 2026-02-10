@@ -197,16 +197,9 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Dns
         private async Task<RegisterResponse?> Register()
         {
             using var client = Client();
-            try
-            {
-                var response = await client.PostAsync($"register", new StringContent(""));
-                return JsonSerializer.Deserialize(await response.Content.ReadAsStringAsync(), AcmeJson.Default.RegisterResponse);
-            }
-            catch (Exception ex)
-            {
-                _log.Error(ex, "Error creating acme-dns registration");
-                return null;
-            }
+            using var content = new StringContent("");
+            var response = await client.PostAsync($"register", content);
+            return JsonSerializer.Deserialize(await response.Content.ReadAsStringAsync(), AcmeJson.Default.RegisterResponse);
         }
 
         public async Task<bool> Update(string domain, string token)
