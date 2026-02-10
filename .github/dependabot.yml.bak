@@ -13,3 +13,5 @@ updates:
     # Raise all NuGet pull requests with assignees
     assignees:
       - "caveman8080"
+    labels:
+      - "nuget dependencies"
