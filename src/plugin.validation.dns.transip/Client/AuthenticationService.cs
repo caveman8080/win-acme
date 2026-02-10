@@ -62,7 +62,7 @@ namespace TransIp.Library
                 ReadOnly = false
             };
             var body = JsonConvert.SerializeObject(request);
-            var content = new StringContent(body);
+            using var content = new StringContent(body);
             content.Headers.Add("Signature", Sign(body));
             var client = await base.GetClient();
             var response = await client.PostAsync("auth", content);

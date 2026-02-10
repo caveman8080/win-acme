@@ -51,7 +51,7 @@ namespace PKISharp.WACS.Client
             {
                 var path = NormalizePath(originalPath);
                 var uri = new Uri(path);
-                var stream = new MemoryStream();
+                using var stream = new MemoryStream();
                 using var writer = new StreamWriter(stream);
                 writer.Write(content);
                 writer.Flush();

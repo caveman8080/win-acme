@@ -57,7 +57,8 @@ internal class InfomaniakClient
             TimeToLive = ttl
         };
         var jsonContent = JsonConvert.SerializeObject(postData);
-        var response = await _httpClient.PostAsync(apiUrl, new StringContent(jsonContent, Encoding.UTF8, MediaTypeNames.Application.Json));
+        using var content = new StringContent(jsonContent, Encoding.UTF8, MediaTypeNames.Application.Json);
+        var response = await _httpClient.PostAsync(apiUrl, content);
         if (!response.IsSuccessStatusCode)
         {
             _log.Error("Infomaniak did not create record. Request Failure.");

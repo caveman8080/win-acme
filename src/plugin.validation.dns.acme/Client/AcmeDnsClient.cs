@@ -230,12 +230,11 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Dns
             try
             {
                 _log.Debug("Sending update request to acme-dns server at {baseUri} for domain {domain}", _baseUri, domain);
-                await client.PostAsync(
-                    $"update", 
-                    new StringContent(
-                        JsonSerializer.Serialize(request, AcmeJson.Default.UpdateRequest), 
-                        Encoding.UTF8, 
-                        "application/json"));
+                using var content = new StringContent(
+                    JsonSerializer.Serialize(request, AcmeJson.Default.UpdateRequest),
+                    Encoding.UTF8,
+                    "application/json");
+                await client.PostAsync($"update", content);
                 return true;
             }
             catch (Exception ex)

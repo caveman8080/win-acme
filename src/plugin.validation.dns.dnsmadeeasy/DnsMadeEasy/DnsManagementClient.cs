@@ -138,7 +138,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.DnsMadeEasy
 
                 //Record successfully created
                 // Wrap our JSON inside a StringContent which then can be used by the HttpClient class
-                var httpContent = new StringContent(serializedObject, Encoding.UTF8, "application/json");
+                using var httpContent = new StringContent(serializedObject, Encoding.UTF8, "application/json");
                 var buildApiUrl = $"V2.0/dns/managed/{domainId}/records/";
 
                 var response = await client.PostAsync(buildApiUrl, httpContent);

@@ -39,7 +39,7 @@ namespace TransIp.Library
         protected async Task<TransIpResponse> Send<TRequest>(string url, HttpMethod method, TRequest payload)
         {
             var body = JsonConvert.SerializeObject(payload);
-            var content = new StringContent(body);
+            using var content = new StringContent(body);
             return await SendContent(url, method, content);
         }
 

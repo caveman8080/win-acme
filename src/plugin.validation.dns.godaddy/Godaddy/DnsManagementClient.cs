@@ -48,7 +48,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Godaddy
                 //Record successfully created
                 // Wrap our JSON inside a StringContent which then can be used by the HttpClient class
                 var typeTxt = type.ToString();
-                var httpContent = new StringContent(serializedObject, Encoding.UTF8, "application/json");
+                using var httpContent = new StringContent(serializedObject, Encoding.UTF8, "application/json");
                 var buildApiUrl = $"v1/domains/{domain}/records/{typeTxt}/{identifier}";
                 var response = await client.PutAsync(buildApiUrl, httpContent);
                 if (response.StatusCode == HttpStatusCode.OK || response.StatusCode == HttpStatusCode.NoContent)

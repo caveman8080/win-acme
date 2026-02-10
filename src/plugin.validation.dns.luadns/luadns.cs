@@ -107,7 +107,8 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Dns
             var newRecord = new RecordData { Name = $"{record.Authority.Domain}.", Type = "TXT", Content = record.Value, TTL = 300 };
             var payload = JsonSerializer.Serialize(newRecord);
 
-            response = await client.PostAsync(new Uri(_LuaDnsApiEndpoint, $"zones/{targetZone.Id}/records"), new StringContent(payload, Encoding.UTF8, "application/json"));
+            using var content = new StringContent(payload, Encoding.UTF8, "application/json");
+            response = await client.PostAsync(new Uri(_LuaDnsApiEndpoint, $"zones/{targetZone.Id}/records"), content);
             if (!response.IsSuccessStatusCode)
             {
                 _log.Error("Failed to create DNS verification record");

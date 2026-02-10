@@ -72,7 +72,7 @@ namespace PKISharp.WACS.Clients
             EnsureDirectories(uri);
 
             // Start upload process
-            var stream = new MemoryStream();
+            using var stream = new MemoryStream();
             using var writer = new StreamWriter(stream);
             // Write content into memorystream
             writer.Write(content);

@@ -102,36 +102,6 @@ namespace ACMESharp.HTTP
             return ((IEnumerable<string>)this).GetEnumerator();
         }
 
-        // We may use this in the future to build a more
-        // efficient version of the Lookup interface
-        //
-        //private class LinkGrouping : IGrouping<string, string>
-        //{
-        //    public string Relation
-        //    { get; set; }
-        //
-        //    public IEnumerable<Link> Links
-        //    { get; set; }
-        //
-        //    public string Key
-        //    {
-        //        get
-        //        {
-        //            return Relation;
-        //        }
-        //    }
-        //
-        //    public IEnumerator<string> GetEnumerator()
-        //    {
-        //        foreach (var l in Links)
-        //            yield return l.Uri;
-        //    }
-        //
-        //    IEnumerator IEnumerable.GetEnumerator()
-        //    {
-        //        foreach (var l in Links)
-        //            yield return l.Uri;
-        //    }
-        //}
+
     }
 }

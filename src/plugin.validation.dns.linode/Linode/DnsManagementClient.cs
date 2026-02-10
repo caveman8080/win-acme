@@ -53,7 +53,8 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Linode
                 ttl_sec = 1
             };
             var jsonContent = JsonSerializer.Serialize(postData);
-            var response = await _httpClient.PostAsync(apiUrl, new StringContent(jsonContent, Encoding.UTF8, "application/json"));
+            using var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+            var response = await _httpClient.PostAsync(apiUrl, content);
             if (!response.IsSuccessStatusCode)
             {
                 _log.Error($"Linode did not create record. Request Failure.");

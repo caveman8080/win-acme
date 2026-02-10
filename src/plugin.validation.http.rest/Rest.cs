@@ -62,7 +62,10 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Http
             using var client = GetClient();
 
             var responses = await Task.WhenAll(_urlsChallenges
-                .Select(item => client.PutAsync(item.url, new StringContent(item.challengeValue))));
+                .Select(async item => {
+                    using var content = new StringContent(item.challengeValue);
+                    return await client.PutAsync(item.url, content);
+                }));
 
             var isError = false;
             foreach (var resp in responses.Where(r => !r.IsSuccessStatusCode))

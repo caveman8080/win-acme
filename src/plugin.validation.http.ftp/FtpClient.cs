@@ -82,7 +82,7 @@ namespace PKISharp.WACS.Clients
 
         public async Task Upload(string ftpPath, string content)
         {
-            var stream = new MemoryStream();
+            using var stream = new MemoryStream();
             using var writer = new StreamWriter(stream);
             writer.Write(content);
             writer.Flush();

@@ -86,7 +86,6 @@ namespace ACMESharp.Crypto.JOSE.Impl
 
         public void Import(string exported)
         {
-            // TODO: this is inefficient and corner cases exist that will break this -- FIX THIS!!!
             if (_dsa == null)
             {
                 throw new InvalidOperationException();
