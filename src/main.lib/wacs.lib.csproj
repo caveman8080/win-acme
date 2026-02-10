@@ -33,9 +33,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Autofac" Version="8.0.0" />
+		<PackageReference Include="Autofac" Version="7.1.0" />
 		<PackageReference Include="BouncyCastle.Cryptography" Version="2.4.0" />
-		<PackageReference Include="DnsClient" Version="1.7.0" />
+		<PackageReference Include="DnsClient" Version="1.6.0" />
 		<PackageReference Include="MailKit" Version="4.6.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="8.0.0" />
