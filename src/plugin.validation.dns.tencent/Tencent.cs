@@ -110,7 +110,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Dns
             };
             var req = new CommonRequest(param);
             var act = "CreateRecord";
-            var resp = client.Call(req, act);
+            client.Call(req, act);
             //Console.WriteLine(resp);
             return true;
         }
