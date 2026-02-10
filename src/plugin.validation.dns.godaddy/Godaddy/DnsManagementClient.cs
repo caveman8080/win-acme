@@ -7,6 +7,8 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
+// Optimized: Replaced generic Exception throws with InvalidOperationException for better exception specificity.
+
 namespace PKISharp.WACS.Plugins.ValidationPlugins.Godaddy
 {
 
@@ -56,7 +58,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Godaddy
                 else
                 {
                     var content = await response.Content.ReadAsStringAsync();
-                    throw new Exception(content);
+                    throw new InvalidOperationException(content);
                 }
 
 
@@ -93,7 +95,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Godaddy
                 else
                 {
                     var content = await response.Content.ReadAsStringAsync();
-                    throw new Exception(content);
+                    throw new InvalidOperationException(content);
                 }
             };
         }

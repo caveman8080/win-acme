@@ -7,7 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using WebDav;
-
+// Optimized: Replaced generic Exception throws with InvalidOperationException for better exception specificity.
 namespace PKISharp.WACS.Client
 {
     internal class WebDavClientWrapper : IDisposable
@@ -66,7 +66,7 @@ namespace PKISharp.WACS.Client
                         var dirCreated = _client.Mkcol(currentPath).Result;
                         if (!dirCreated.IsSuccessful)
                         {
-                            throw new Exception($"path {currentPath} - {dirCreated.StatusCode} ({dirCreated.Description})");
+                            throw new InvalidOperationException($"Failed to create directory {currentPath}: {dirCreated.StatusCode} ({dirCreated.Description})");
                         }
                     }
                 }
@@ -75,7 +75,7 @@ namespace PKISharp.WACS.Client
                 var fileUploaded = _client.PutFile(currentPath, stream).Result;
                 if (!fileUploaded.IsSuccessful)
                 {
-                    throw new Exception($"{fileUploaded.StatusCode} ({fileUploaded.Description})");
+                    throw new InvalidOperationException($"Failed to upload file {currentPath}: {fileUploaded.StatusCode} ({fileUploaded.Description})");
                 }
             }
             catch (Exception ex)

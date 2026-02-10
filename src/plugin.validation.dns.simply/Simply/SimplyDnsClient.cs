@@ -9,6 +9,8 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
+// Optimized: Replaced generic Exception throws with InvalidOperationException for better exception specificity.
+
 namespace PKISharp.WACS.Plugins.ValidationPlugins.Simply
 {
     public class SimplyDnsClient
@@ -44,13 +46,13 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Simply
             var product = products.FirstOrDefault(x => x.Object == objectId);
             if (product == null)
             {
-                throw new Exception($"Unable to find product with object id {objectId}.");
+                throw new InvalidOperationException($"Unable to find product with object id {objectId}.");
             }
             var records = await GetRecordsAsync(objectId);
             var record = records.SingleOrDefault(x => x.Type == "TXT" && $"{x.Name}.{product.Domain?.NameIdn ?? "unknown"}" == domain && x.Data == value);
             if (record is null)
             {
-                throw new Exception($"The TXT record {domain} that should be deleted does not exist at Simply.");
+                throw new InvalidOperationException($"The TXT record {domain} that should be deleted does not exist at Simply.");
             }
             await DeleteRecordAsync(objectId, record.RecordId);
         }
@@ -62,7 +64,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Simply
             var products = await JsonSerializer.DeserializeAsync<ProductList>(stream);
             if (products == null || products.Products == null)
             {
-                throw new Exception("Unable to retrieve products");
+                throw new InvalidOperationException("Unable to retrieve products");
             }
             return products.Products;
         }

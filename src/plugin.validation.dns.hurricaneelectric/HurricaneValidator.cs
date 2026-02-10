@@ -8,6 +8,8 @@ using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using System.Web;
 
+// Optimized: Replaced generic Exception throw with InvalidOperationException for better exception specificity.
+
 [assembly: SupportedOSPlatform("windows")]
 
 namespace PKISharp.WACS.Plugins.ValidationPlugins.Dns
@@ -67,7 +69,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Dns
                     _log.Error("Failed to create TXT record for {domain}: {response}", record.Authority.Domain, response);
                     if (response.Contains("abuse"))
                     {
-                        throw new Exception("Abuse detected in Hurricane Electric API response");
+                        throw new InvalidOperationException("Abuse detected in Hurricane Electric API response");
                     }
                     return false;
                 }

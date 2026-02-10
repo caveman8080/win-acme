@@ -15,6 +15,8 @@ using System.Security.Policy;
 using System.Threading.Tasks;
 using ArDnsClient = ARSoft.Tools.Net.Dns.DnsClient;
 
+// Optimized: Replaced generic Exception throws with InvalidOperationException for better exception specificity.
+
 [assembly: SupportedOSPlatform("windows")]
 
 namespace PKISharp.WACS.Plugins.ValidationPlugins.Dns
@@ -165,7 +167,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Dns
                         GetIps(_options.ServerHost);
                     if (!lookup.Any())
                     {
-                        throw new Exception($"Unable to find IP for {_options.ServerHost}");
+                        throw new InvalidOperationException($"Unable to find IP for {_options.ServerHost}");
                     }
                     ipAddress = lookup.First();
                 }
@@ -203,7 +205,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Dns
             var ret = await client.SendUpdateAsync(msg);
             if (ret == null || ret.ReturnCode != ReturnCode.NoError)
             {
-                throw new Exception(ret?.ReturnCode.ToString() ?? "no response");
+                throw new InvalidOperationException(ret?.ReturnCode.ToString() ?? "no response");
             }
         }
     }

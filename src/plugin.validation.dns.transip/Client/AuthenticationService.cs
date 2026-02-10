@@ -14,6 +14,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
+// Optimized: Replaced generic Exception throws with ArgumentException for better exception specificity.
+
 namespace TransIp.Library
 {
     public class AuthenticationService : BaseService
@@ -25,7 +27,7 @@ namespace TransIp.Library
         {
             if (string.IsNullOrWhiteSpace(login))
             {
-                throw new Exception("No login specified");
+                throw new ArgumentException("No login specified");
             }
             _login = login;
             try
@@ -34,11 +36,11 @@ namespace TransIp.Library
             } 
             catch (Exception ex)
             {
-                throw new Exception("Unable to parse private key", ex);
+                throw new ArgumentException("Unable to parse private key", ex);
             }
             if (_key == null)
             {
-                throw new Exception("Unable to parse private key");
+                throw new ArgumentException("Unable to parse private key");
             }
         }
 

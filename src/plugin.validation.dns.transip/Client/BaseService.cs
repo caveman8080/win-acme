@@ -5,6 +5,8 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
+// Optimized: Replaced generic Exception throw with InvalidOperationException for better exception specificity.
+
 namespace TransIp.Library
 {
     public abstract class BaseService
@@ -54,7 +56,7 @@ namespace TransIp.Library
             var parsed = await ParseResponse(httpResponse);
             if (parsed.Success == false)
             {
-                throw new Exception(parsed.Payload);
+                throw new InvalidOperationException(parsed.Payload);
             }
             return parsed;
         } 

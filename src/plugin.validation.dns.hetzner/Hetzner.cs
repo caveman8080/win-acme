@@ -8,6 +8,8 @@ using System.Linq;
 using System.Runtime.Versioning;
 using System.Threading.Tasks;
 
+// Optimized: Replaced generic Exception throws with InvalidOperationException for better exception specificity.
+
 [assembly: SupportedOSPlatform("windows")]
 
 namespace PKISharp.WACS.Plugins.ValidationPlugins.Dns
@@ -50,7 +52,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Dns
             {
                 _log.Error("No zones could be found using the Hetzner DNS API. " +
                     "Maybe you entered a wrong API Token?");
-                throw new Exception();
+                throw new InvalidOperationException("No zones found using Hetzner DNS API");
             }
 
             var bestZone = FindBestMatch(zones.Where(x => x.Paused is false).ToDictionary(x => x.Name), recordName);
@@ -58,7 +60,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Dns
             {
                 _log.Error($"No zone could be found that matches with record {recordName} and is not paused. " +
                     $"Maybe the API Token does not allow access to your domain?");
-                throw new Exception();
+                throw new InvalidOperationException($"No matching zone found for record {recordName}");
             }
 
             _log.Information($"Best matching zone found: {bestZone.Name} - {bestZone.Status}");

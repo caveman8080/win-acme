@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 
 [assembly: SupportedOSPlatform("windows")]
 
+// Optimized: Replaced generic Exception throw with InvalidOperationException for better exception specificity.
+
 namespace PKISharp.WACS.Plugins.ValidationPlugins
 {
     [IPlugin.Plugin<
@@ -79,7 +81,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins
             var product = FindBestMatch(products.ToDictionary(x => x.Domain?.NameIdn ?? "", x => x), recordName);
             if (product is null)
             {
-                throw new Exception($"Unable to find product for record '{recordName}'");
+                throw new InvalidOperationException($"Unable to find product for record '{recordName}'");
             }
             return product;
         }

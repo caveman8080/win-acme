@@ -13,6 +13,8 @@ using System.Net.Http;
 using System.Runtime.Versioning;
 using System.Threading.Tasks;
 
+// Optimized: Replaced generic Exception throws with InvalidOperationException for better exception specificity.
+
 [assembly: SupportedOSPlatform("windows")]
 
 namespace PKISharp.WACS.Plugins.ValidationPlugins.Dns
@@ -66,14 +68,14 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Dns
             {
                 _log.Error("No zones could be found using the Cloudflare API. " +
                     "Maybe you entered a wrong API Token?");
-                throw new Exception();
+                throw new InvalidOperationException("No zones found using Cloudflare API");
             }
             var bestZone = FindBestMatch(allZones.ToDictionary(x => x.Name), recordName);
             if (bestZone == null)
             {
                 _log.Error($"No zone could be found that matches with record {recordName}. " +
                     $"Maybe the API Token does not allow access to your domain?");
-                throw new Exception();
+                throw new InvalidOperationException($"No matching zone found for record {recordName}");
             }
             return bestZone;
         }

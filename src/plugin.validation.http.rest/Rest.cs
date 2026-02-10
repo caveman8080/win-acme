@@ -13,6 +13,8 @@ using System.Threading.Tasks;
 
 [assembly: SupportedOSPlatform("windows")]
 
+// Optimized: Replaced generic Exception throw with InvalidOperationException for better exception specificity.
+
 namespace PKISharp.WACS.Plugins.ValidationPlugins.Http
 {
     [IPlugin.Plugin<
@@ -70,7 +72,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Http
             }
             if (isError)
             {
-                throw new Exception("Failure sending verification files to one or more servers");
+                throw new InvalidOperationException("Failure sending verification files to one or more servers");
             }
         }
 

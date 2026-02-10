@@ -15,6 +15,8 @@ using System.Net.Http;
 using System.Runtime.Versioning;
 using System.Threading.Tasks;
 
+// Optimized: Replaced generic Exception throw with InvalidOperationException for better exception specificity.
+
 [assembly: SupportedOSPlatform("windows")]
 
 namespace PKISharp.WACS.Plugins.ValidationPlugins.Dns
@@ -57,7 +59,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Dns
             GoogleCredential credential;
             if (!_options.ServiceAccountKeyPath.ValidFile(_log))
             {
-                throw new Exception("Configuration error");
+                throw new InvalidOperationException("Configuration error");
             }
             using (var stream = new FileStream(_options.ServiceAccountKeyPath, FileMode.Open, FileAccess.Read))
             {
