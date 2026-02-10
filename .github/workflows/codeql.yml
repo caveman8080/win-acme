@@ -17,12 +17,38 @@ on:
       - '**/*.md'
       - '**/*.txt'
       - '**/*.yml'
+      - '**/Ddebug/**'
+      - '**/DebugPublic/**'
+      - '**/Release/**'
+      - '**/Rreleases/**'
+      - '**/x64/**'
+      - '**/x86/**'
+      - '**/bld/**'
+      - '**/bin/**'
+      - '**/obj/**'
+      - '**/TestResult*/**'
+      - '**/BuildLog.*'
+      - '**/DebugPS/**'
+      - '**/ReleasePS/**'
     branches: [ "master" ]
   pull_request:
     paths-ignore:
       - '**/*.md'
       - '**/*.txt'
       - '**/*.yml'
+      - '**/Ddebug/**'
+      - '**/DebugPublic/**'
+      - '**/Release/**'
+      - '**/Rreleases/**'
+      - '**/x64/**'
+      - '**/x86/**'
+      - '**/bld/**'
+      - '**/bin/**'
+      - '**/obj/**'
+      - '**/TestResult*/**'
+      - '**/BuildLog.*'
+      - '**/DebugPS/**'
+      - '**/ReleasePS/**'
     branches: [ "master" ]
   schedule:
     - cron: '36 2 * * 3'
@@ -100,9 +126,6 @@ jobs:
         # For more details on CodeQL's query packs, refer to: https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
         queries: security-extended,security-and-quality
 
-        paths-ignore: |
-          **/bin/**
-          **/obj/**
 
     # If the analyze step fails for one of the languages you are analyzing with
     # "We were unable to automatically build your code", modify the matrix above
