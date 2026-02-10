@@ -192,13 +192,21 @@ namespace PKISharp.WACS.Clients.DNS
                 }
                 _authoritativeNs.TryAdd(domainName, verified);
             }
-            catch (Exception ex)
+            catch (Exception ex) when (!IsCriticalException(ex))
             {
                 _log.Warning("Unexpected DNS error while checking {domainName}: {message}", domainName, ex.Message);
                 _log.Verbose(ex.StackTrace ?? "No stacktrace");
                 _authoritativeNs.TryAdd(domainName, new List<IPAddress>());
             }
             return _authoritativeNs[domainName];
+        }
+
+        private static bool IsCriticalException(Exception ex)
+        {
+            return ex is OutOfMemoryException
+                || ex is StackOverflowException
+                || ex is AccessViolationException
+                || ex is AppDomainUnloadedException;
         }
 
         /// <summary>

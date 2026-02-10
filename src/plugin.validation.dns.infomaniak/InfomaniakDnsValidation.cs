@@ -46,6 +46,11 @@ internal class InfomaniakDnsValidation : DnsValidation<InfomaniakDnsValidation>
         _log = logService;
     }
 
+    private static bool IsCriticalException(Exception ex)
+    {
+        return ex is OutOfMemoryException || ex is StackOverflowException || ex is AccessViolationException || ex is AppDomainUnloadedException;
+    }
+
     public override async Task<bool> CreateRecord(DnsValidationRecord record)
     {
         try
@@ -70,7 +75,7 @@ internal class InfomaniakDnsValidation : DnsValidation<InfomaniakDnsValidation>
                 (b, s) => s.Append(recordId).ToList());
             return true;
         }
-        catch (Exception ex)
+        catch (Exception ex) when (!IsCriticalException(ex))
         {
             _log.Warning($"Unable to create record at Infomaniak: {ex.Message}");
             return false;
@@ -87,7 +92,7 @@ internal class InfomaniakDnsValidation : DnsValidation<InfomaniakDnsValidation>
                 {
                     await _client.DeleteRecord(domainId, recordId);
                 }
-                catch (Exception ex)
+                catch (Exception ex) when (!IsCriticalException(ex))
                 {
                     _log.Warning("Unable to delete record {recordId} from Infomaniak domain {domainId}: {message}", recordId, domainId, ex.Message);
                 }

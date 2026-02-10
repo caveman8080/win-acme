@@ -22,7 +22,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Http
                 var uri = new Uri(path);
                 return uri.Scheme == "ftp" || uri.Scheme == "ftps";
             }
-            catch (Exception ex)
+            catch (Exception ex) when (!IsCriticalException(ex))
             {
                 _log.Error(ex, "Invalid path");
                 return false;
@@ -68,6 +68,14 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Http
                     yield return x;
                 }
             }
+        }
+
+        private static bool IsCriticalException(Exception ex)
+        {
+            return ex is OutOfMemoryException
+                || ex is StackOverflowException
+                || ex is AccessViolationException
+                || ex is AppDomainUnloadedException;
         }
     }
 }

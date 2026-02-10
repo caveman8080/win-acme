@@ -73,7 +73,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Dns
                     return false;
                 }
             }
-            catch (Exception ex)
+            catch (Exception ex) when (!IsCriticalException(ex))
             {
                 _log.Error("Error creating TXT record for {domain}: {message}", record.Authority.Domain, ex.Message);
                 throw;
@@ -94,10 +94,18 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Dns
                     _log.Warning("Failed to delete TXT record for {domain}: {response}", record.Authority.Domain, response);
                 }
             }
-            catch (Exception ex)
+            catch (Exception ex) when (!IsCriticalException(ex))
             {
                 _log.Warning("Error deleting TXT record for {domain}: {message}", record.Authority.Domain, ex.Message);
             }
+        }
+
+        private static bool IsCriticalException(Exception ex)
+        {
+            return ex is OutOfMemoryException
+                || ex is StackOverflowException
+                || ex is AccessViolationException
+                || ex is AppDomainUnloadedException;
         }
 
         public void Dispose() => _hc.Dispose();

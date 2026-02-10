@@ -57,7 +57,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Dns
                 //Add Record
                 return AddRecord(identifier, domain, value);
             }
-            catch (Exception ex)
+            catch (Exception ex) when (!IsCriticalException(ex))
             {
                 Console.WriteLine(ex.Message);
                 //Out Error
@@ -76,7 +76,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Dns
                 //Delete Record
                 DelRecord(identifier, domain);
             }
-            catch (Exception ex)
+            catch (Exception ex) when (!IsCriticalException(ex))
             {
                 Console.WriteLine(ex.Message);
                 //Out Error
@@ -207,6 +207,14 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Dns
         }
 
         #endregion PrivateLogic
+
+        private static bool IsCriticalException(Exception ex)
+        {
+            return ex is OutOfMemoryException
+                || ex is StackOverflowException
+                || ex is AccessViolationException
+                || ex is AppDomainUnloadedException;
+        }
 
         public void Dispose() => _hc.Dispose();
     }

@@ -102,7 +102,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Dns
 
                     return true;
                 }
-                catch (Exception ex)
+                catch (Exception ex) when (!IsCriticalException(ex))
                 {
                     _log.Debug("Error creating {domain} in zone {zone}: {ex}", domain, currentZone, ex.Message);
                 }
@@ -139,7 +139,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Dns
                 _log.Verbose("Deleting record {name} in zone {zone}", record.Authority.Domain, topZone);
                 await SendUpdate(msg);
             }
-            catch (Exception ex)
+            catch (Exception ex) when (!IsCriticalException(ex))
             {
                 _log.Error(ex, "Error deleting DNS record");
             }
@@ -207,6 +207,14 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Dns
             {
                 throw new InvalidOperationException(ret?.ReturnCode.ToString() ?? "no response");
             }
+        }
+
+        private static bool IsCriticalException(Exception ex)
+        {
+            return ex is OutOfMemoryException
+                || ex is StackOverflowException
+                || ex is AccessViolationException
+                || ex is AppDomainUnloadedException;
         }
     }
 }

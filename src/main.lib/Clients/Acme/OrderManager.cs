@@ -53,13 +53,22 @@ namespace PKISharp.WACS.Clients.Acme
             cacheKeyBuilder.Append(order.Target.CommonName);
             cacheKeyBuilder.Append(string.Join(',', order.Target.GetIdentifiers(true).OrderBy(x => x).Select(x => x.Value.ToLower())));
             if (order.Target.UserCsrBytes != null)
+            {
                 cacheKeyBuilder.Append(Convert.ToBase64String(order.Target.UserCsrBytes.ToArray()));
+            }
             else
+            {
                 cacheKeyBuilder.Append('-');
+            }
+            
             if (order.Renewal.CsrPluginOptions != null)
+            {
                 cacheKeyBuilder.Append(JsonSerializer.Serialize(order.Renewal.CsrPluginOptions, WacsJson.Insensitive.CsrPluginOptions));
+            }
             else
+            {
                 cacheKeyBuilder.Append('-');
+            }
             cacheKeyBuilder.Append(order.KeyPath);
             return cacheKeyBuilder.ToString().SHA1();
         }

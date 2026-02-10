@@ -62,7 +62,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins
                     (b, s) => s.Append(recordId).ToList());
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception ex) when (!IsCriticalException(ex))
             {
                 _log.Warning($"Unable to create record at Linode: {ex.Message}");
                 return false;
@@ -81,7 +81,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins
                         {
                             await _client.DeleteRecord(domainId, recordId);
                         }
-                        catch (Exception ex)
+                        catch (Exception ex) when (!IsCriticalException(ex))
                         {
                             _log.Warning("Unable to delete record {recordId} from Linode domain {domainId}: {message}", recordId, domainId, ex.Message);
                         }
@@ -90,5 +90,12 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins
             }
         }
 
+        private static bool IsCriticalException(Exception ex)
+        {
+            return ex is OutOfMemoryException
+                || ex is StackOverflowException
+                || ex is AccessViolationException
+                || ex is AppDomainUnloadedException;
+        }
     }
 }

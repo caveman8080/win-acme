@@ -34,7 +34,7 @@ namespace TransIp.Library
             {
                 _key = ParseKey(privateKey);
             } 
-            catch (Exception ex)
+            catch (Exception ex) when (!IsCriticalException(ex))
             {
                 throw new ArgumentException("Unable to parse private key", ex);
             }
@@ -155,6 +155,14 @@ namespace TransIp.Library
             
             [JsonProperty("global_key")]
             public bool GlobalKey { get; set; }
+        }
+
+        private static bool IsCriticalException(Exception ex)
+        {
+            return ex is OutOfMemoryException
+                || ex is StackOverflowException
+                || ex is AccessViolationException
+                || ex is AppDomainUnloadedException;
         }
     }
 }

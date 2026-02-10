@@ -78,7 +78,7 @@ namespace PKISharp.WACS.Client
                     throw new InvalidOperationException($"Failed to upload file {currentPath}: {fileUploaded.StatusCode} ({fileUploaded.Description})");
                 }
             }
-            catch (Exception ex)
+            catch (Exception ex) when (!IsCriticalException(ex))
             {
                 _log.Error("Error uploading file {path} {Message}", originalPath, ex.Message);
                 throw;
@@ -107,7 +107,7 @@ namespace PKISharp.WACS.Client
             {
                 _client.Delete(path).Wait();
             }
-            catch (Exception ex)
+            catch (Exception ex) when (!IsCriticalException(ex))
             {
                 _log.Verbose("WebDav error {@ex}", ex);
                 _log.Warning("Error deleting file/folder {path} {Message}", path, ex.Message);
@@ -125,11 +125,19 @@ namespace PKISharp.WACS.Client
                     return folderFiles.Resources.Select(r => r.DisplayName);
                 }
             }
-            catch (Exception ex)
+            catch (Exception ex) when (!IsCriticalException(ex))
             {
                 _log.Verbose("WebDav error {@ex}", ex);
             }
             return new string[] { };
+        }
+
+        private static bool IsCriticalException(Exception ex)
+        {
+            return ex is OutOfMemoryException
+                || ex is StackOverflowException
+                || ex is AccessViolationException
+                || ex is AppDomainUnloadedException;
         }
 
         #region IDisposable

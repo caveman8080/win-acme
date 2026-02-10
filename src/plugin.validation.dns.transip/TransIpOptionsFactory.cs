@@ -82,7 +82,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Dns
                 new AuthenticationService("check", privateKey, _proxy);
                 return true;
             }
-            catch (Exception ex) 
+            catch (Exception ex) when (!IsCriticalException(ex))
             {
                 _log.Error(ex, "Invalid private key");
             }
@@ -93,6 +93,14 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Dns
         {
             yield return (Login.Meta, options.Login);
             yield return (PrivateKey.Meta, options.PrivateKey);
+        }
+
+        private static bool IsCriticalException(Exception ex)
+        {
+            return ex is OutOfMemoryException
+                || ex is StackOverflowException
+                || ex is AccessViolationException
+                || ex is AppDomainUnloadedException;
         }
     }
 }

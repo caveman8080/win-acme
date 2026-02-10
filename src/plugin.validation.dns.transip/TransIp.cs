@@ -52,7 +52,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Dns
                     });
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception ex) when (!IsCriticalException(ex))
             {
                 _log.Warning($"Error creating TXT record: {ex.Message}");
                 return false;
@@ -74,10 +74,18 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Dns
                         Type = "TXT"
                     });
             }
-            catch (Exception ex)
+            catch (Exception ex) when (!IsCriticalException(ex))
             {
                 _log.Warning($"Error deleting TXT record: {ex.Message}");
             }
+        }
+
+        private static bool IsCriticalException(Exception ex)
+        {
+            return ex is OutOfMemoryException
+                || ex is StackOverflowException
+                || ex is AccessViolationException
+                || ex is AppDomainUnloadedException;
         }
     }
 }

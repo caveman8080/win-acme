@@ -50,7 +50,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins
                 await _client.CreateRecordAsync(product.Object, recordName, record.Value);
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception ex) when (!IsCriticalException(ex))
             {
                 _log.Warning($"Unable to create record at Simply: {ex.Message}");
             }
@@ -69,7 +69,7 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins
                 }
                 await _client.DeleteRecordAsync(product.Object, record.Authority.Domain, record.Value);
             }
-            catch (Exception ex)
+            catch (Exception ex) when (!IsCriticalException(ex))
             {
                 _log.Warning($"Unable to delete record from Simply: {ex.Message}");
             }
@@ -84,6 +84,14 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins
                 throw new InvalidOperationException($"Unable to find product for record '{recordName}'");
             }
             return product;
+        }
+
+        private static bool IsCriticalException(Exception ex)
+        {
+            return ex is OutOfMemoryException
+                || ex is StackOverflowException
+                || ex is AccessViolationException
+                || ex is AppDomainUnloadedException;
         }
     }
 }
