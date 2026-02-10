@@ -7,7 +7,7 @@ version: 2
 updates:
   # Enable version updates for NuGet
   - package-ecosystem: "nuget"
-    directory: "/"
+    directory: "**/**"
     schedule:
       interval: "monthly"
     # Raise all NuGet pull requests with assignees
