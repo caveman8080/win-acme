@@ -71,14 +71,14 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Simply
         {
             using var content = new StringContent(JsonSerializer.Serialize(record), Encoding.UTF8, "application/json");
             using var response = await _httpClient.PostAsync(_baseUrl + $"/my/products/{WebUtility.UrlEncode(objectId)}/dns/records", content);
-            var responseBody = await response.Content.ReadAsStringAsync();
+            await response.Content.ReadAsStringAsync();
             response.EnsureSuccessStatusCode();
         }
 
         private async Task DeleteRecordAsync(string objectId, int recordId)
         {
             using var response = await _httpClient.DeleteAsync(_baseUrl + $"/my/products/{WebUtility.UrlEncode(objectId)}/dns/records/{recordId}");
-            var responseBody = await response.Content.ReadAsStringAsync();
+            await response.Content.ReadAsStringAsync();
             response.EnsureSuccessStatusCode();
         }
 
