@@ -56,7 +56,6 @@ namespace PKISharp.WACS.Plugins.ValidationPlugins.Dns.NS1
             });
 
             using var response = await client.PutAsync($"zones/{zone}/{domain}/{type}", new ByteArrayContent(json));
-            var err = await response.Content.ReadAsStringAsync();
             if (!response.IsSuccessStatusCode)
             {
                 return false;
