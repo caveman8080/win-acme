@@ -20,7 +20,7 @@ on:
       - '**/bin/**'
       - '**/obj/**'
       - '**/TestResults/**'
-    branches: [ "master" ]
+    branches: [ "main" ]
   pull_request:
     paths-ignore:
       - '**/*.md'
@@ -29,7 +29,7 @@ on:
       - '**/bin/**'
       - '**/obj/**'
       - '**/TestResults/**'
-    branches: [ "master" ]
+    branches: [ "main" ]
   schedule:
     - cron: '36 2 * * 3'
 
